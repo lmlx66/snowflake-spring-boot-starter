@@ -6,8 +6,8 @@
 
     <groupId>io.github.lmlx66</groupId>
     <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
-    <description>yitter雪花漂移算法自动配置启动模块</description>
     <version>1.0.7</version>
+    <description>yitter雪花漂移算法自动配置启动模块</description>
     <packaging>jar</packaging>
 
     <parent>
@@ -21,8 +21,12 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
 
+        <!--依赖插件-->
         <spring-boot.version>2.6.7</spring-boot.version>
         <spring-cloud-context.version>3.0.2</spring-cloud-context.version>
+
+        <!--maven插件-->
+        <compile.version>8</compile.version>
     </properties>
 
     <dependencies>
@@ -60,36 +64,20 @@
         </dependency>
     </dependencies>
 
-    <!--开源证书-->
+    <!--开源证书,你的github项目的开源证书地址-->
     <licenses>
         <license>
-            <name>Apache License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <name>MIT</name>
+            <url>https://github.com/lmlx66/yitter-idgenerator-spring-boot-starter/blob/master/LICENSE</url>
         </license>
     </licenses>
-
-    <!--gpg密钥-->
-    <profiles>
-        <profile>
-            <!-- id 与 pom.xml 的 maven-gpg-plugin 插件中的 id 对应-->
-            <id>oss</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <gpg.executable>gpg</gpg.executable>
-                <gpg.passphrase>lmlm17773582220</gpg.passphrase>
-            </properties>
-        </profile>
-    </profiles>
 
 
     <!-- 项目信息 -->
     <scm>
-        <connection>scm:git:git@github.com:lmlx66/yitter-idgenerator-spring-boot-starter.git</connection>
-        <developerConnection>scm:git:git@github.com:lmlx66/yitter-idgenerator-spring-boot-starter.git
-        </developerConnection>
-        <url>git@github.com:lmlx66/yitter-idgenerator-spring-boot-starter.git</url>
+        <url>https://github.com/lmlx66/yitter-idgenerator-spring-boot-starter</url>
+        <connection>scm:git:https://git@github.com/lmlx66/yitter-idgenerator-spring-boot-starter.git</connection>
+        <developerConnection>https://github.com/lmlx66</developerConnection>
     </scm>
 
     <!-- issue -->
@@ -97,7 +85,6 @@
         <system>Github Issue</system>
         <url>https://github.com/lmlx66/yitter-idgenerator-spring-boot-starter/issues</url>
     </issueManagement>
-
 
     <!-- 作者信息 -->
     <developers>
@@ -111,14 +98,15 @@
         </developer>
     </developers>
 
+
     <!--snapshotRepository地址-->
     <distributionManagement>
         <snapshotRepository>
-            <id>sonatype</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
         </snapshotRepository>
         <repository>
-            <id>sonatype</id>
+            <id>ossrh</id>
             <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
@@ -128,28 +116,37 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.0</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <encoding>UTF-8</encoding>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <source>${compile.version}</source>
+                    <target>${compile.version}</target>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
                 </configuration>
             </plugin>
+            <!-- Javadoc -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.18.1</version>
-                <configuration>
-                    <skipTests>true</skipTests>
-                </configuration>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <!--自定义的注释注解忽略报错-->
+                        <configuration>
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
+
+            <!-- 打包源码插件 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <attach>true</attach>
-                </configuration>
+                <version>2.2.1</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -159,46 +156,71 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-site-plugin</artifactId>
-                <version>3.7.1</version>
-            </plugin>
-            <!-- Javadoc -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.1</version>
-                <configuration>
-                    <javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
-                    <additionalJOptions>
-                        <additionalJOption>-Xdoclint:none</additionalJOption>
-                    </additionalJOptions>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Gpg Signature -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
+
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>ossrh</id>
+                    <url>https://s01.oss.sonatype.orgservice/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <!-- 打包源 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>3.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>oss</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Gpg 签证 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>ossrh</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--发布源地址-->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
 </project>

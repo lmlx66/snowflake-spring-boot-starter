@@ -33,7 +33,14 @@
 
 ### 4、如何使用
 
-1.引入jar包，暂时没上传maven，会尽快的。当然也可以下载源代码。
+1.引入jar包。当然也可以下载源代码。
+``` pom
+<dependency>
+  <groupId>io.github.lmlx66</groupId>
+  <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
+  <version>1.0.7</version>
+</dependency>
+```
 
 
 
@@ -47,7 +54,7 @@ Long id = YitIdGenerator.next();
 
 
 
-3.我们也可以对简单配置一下
+3.当然我们也可以对简单配置一下
 
 ```yaml
 yitter:
