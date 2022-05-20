@@ -33,7 +33,7 @@
 
 ### 4、如何使用
 
-1.引入jar包。当然也可以下载源代码。
+1.引入jar包。当然也可以下载源代码。版本号与核心代码包版本保持一致。
 ``` pom
 <dependency>
   <groupId>io.github.lmlx66</groupId>
