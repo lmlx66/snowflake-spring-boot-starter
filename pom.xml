@@ -4,12 +4,20 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <!--组id，引入的时候与我们之前配置的groupId一致-->
     <groupId>io.github.lmlx66</groupId>
+    <!--工件id，引入时候与其一致-->
     <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
+    <!--版本号-->
     <version>1.0.7</version>
+    <!--项目描述-->
     <description>yitter雪花漂移算法自动配置启动模块</description>
+    <!--打包方式-->
     <packaging>jar</packaging>
+    <!--作者主页-->
+    <url>www.lmlx66.top</url>
 
+    <!--不是必选-->
     <parent>
         <artifactId>spring-boot-starter-parent</artifactId>
         <groupId>org.springframework.boot</groupId>
@@ -17,6 +25,7 @@
         <relativePath/>
     </parent>
 
+    <!--版本描述-->
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
@@ -99,7 +108,7 @@
     </developers>
 
 
-    <!--snapshotRepository地址-->
+    <!--snapshotRepository地址，我们需要上传的地址，申请成功后会发帖告诉你地址的-->
     <distributionManagement>
         <snapshotRepository>
             <id>ossrh</id>
@@ -111,6 +120,7 @@
         </repository>
     </distributionManagement>
 
+    <!--构建-->
     <build>
         <plugins>
             <plugin>
@@ -221,6 +231,5 @@
             </build>
         </profile>
     </profiles>
-
 
 </project>

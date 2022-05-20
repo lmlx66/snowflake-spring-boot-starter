@@ -1,17 +1,16 @@
 # 开箱即用的雪花漂移算法（yitter-idgenerator-spring-boot-starter）
 
 ### 1、介绍
-依赖于SnowFlake IdGenerator核心代码，加入springboot自动配置，做到开箱即用的雪花生成算法。在缩短ID长度的同时，具备极高瞬时并发处理能力（50W/0.1s）。支持回拨。
 
-请注意，本包为SnowFlake IdGenerator算法java版本springboot的集成，做到开箱即用。
+雪花算法是一个分布式主键id生成的解决方案，他解决了分布式id生成的痛点问题。
+
+本项目依赖于[SnowFlake IdGenerator](https://gitee.com/yitter/idgenerator)核心代码，加入springboot自动配置，从而达到开箱即用的效果。该算法在缩短ID长度的同时，具备极高瞬时并发处理能力（50W/0.1s）。并且支持回拨。
 
 
 
 ### 2、技术支持
 
-本包基于SnowFlake IdGenerator核心实现，核心实现和该算法更多细节请参考其项目地址。
-
-[多语言新雪花算法(SnowFlake IdGenerator)](https://gitee.com/yitter/idgenerator)
+本包基于[多语言新雪花算法(SnowFlake IdGenerator)](https://gitee.com/yitter/idgenerator)核心代码实现，关于该算法更多细节请参考其项目地址。
 
 
 
@@ -33,8 +32,9 @@
 
 ### 4、如何使用
 
-1.引入jar包。当然也可以下载源代码。版本号与核心代码包版本保持一致。
-``` pom
+1.引入maven依赖。当然也可以下载源代码。版本号与核心代码包版本保持一致。
+
+``` xml
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
@@ -89,7 +89,9 @@ yitter:
 
 #### 5.2、配置类配置
 
-当然，我们也支持配置类配置，返回类型为YitIdGenerator，IdGeneratorProperties是基础配置类实体映射类。
+当然，我们也支持配置类配置，返回类型为YitIdGenerator，其构造需要一个IdGeneratorProperties类型。
+
+IdGeneratorProperties是基础配置类实体映射类，其内部属性即我们可配置的属性。
 
 但请注意，如果配置类和配置文件（yaml或properties）同时使用，优先采用配置类配置。
 
@@ -112,6 +114,10 @@ public class IdGeneratorConfig {
 
 
 #### 5.3、参数详解
+
+❄**Method**，表示使用什么算法，默认值为1，表示使用雪花漂移算法，2表示使用传统雪花算法。但仍建议你使用雪花漂移算法（Method=1，默认的），毕竟它具有更好的伸缩力和更高的性能。
+
+❄**Monomer**，表示是否为单机模式，默认为true表示为单机模式，在单机模式下，机器码位长为1，机器码为0。但优先使用用户配置，也就是说如果你配置了其他的机器码和机器码位长，优先使用你配置的。
 
 ❄ ***WorkerIdBitLength***，机器码位长，决定 WorkerId 的最大值，**默认值6**，取值范围 [1, 19]，实际上有些语言采用 无符号 ushort (uint16) 类型接收该参数，所以最大值是16，如果是采用 有符号 short (int16)，则最大值为15。
 
