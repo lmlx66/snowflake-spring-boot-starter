@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 /**
  * @author: 王富贵
@@ -12,6 +13,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @createTime: 2022年05月19日 11:19:59
  */
 @Data
+@RefreshScope
 @ApiModel("雪花算法配置文件映射实体")
 @ConfigurationProperties("yitter")
 public class IdGeneratorProperties {

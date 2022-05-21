@@ -9,7 +9,7 @@
     <!--工件id，引入时候与其一致-->
     <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
     <!--版本号-->
-    <version>1.0.7</version>
+    <version>1.0.8-SNAPSHOT</version>
     <!--项目描述-->
     <description>yitter雪花漂移算法自动配置启动模块</description>
     <!--打包方式-->
@@ -34,6 +34,7 @@
         <spring-cloud-context.version>3.0.2</spring-cloud-context.version>
         <swagger-annotations.version>1.6.6</swagger-annotations.version>
         <lombok.version>1.18.24</lombok.version>
+        <spring-cloud-context.version>2.2.9.RELEASE</spring-cloud-context.version>
 
         <!--maven插件-->
         <compile.version>8</compile.version>
@@ -66,7 +67,20 @@
             <artifactId>swagger-annotations</artifactId>
             <version>${swagger-annotations.version}</version>
         </dependency>
+
+        <!--spring-cloud注解，主要是引入动态刷新-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
+            <version>${spring-cloud-context.version}</version>
+        </dependency>
     </dependencies>
+
 
     <!--开源证书,你的github项目的开源证书地址-->
     <licenses>
@@ -75,7 +89,6 @@
             <url>https://github.com/lmlx66/yitter-idgenerator-spring-boot-starter/blob/master/LICENSE</url>
         </license>
     </licenses>
-
 
     <!-- 项目信息 -->
     <scm>
@@ -102,20 +115,7 @@
         </developer>
     </developers>
 
-
-    <!--snapshotRepository地址，我们需要上传的地址，申请成功后会发帖告诉你地址的-->
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
-    <!--构建-->
+    <!--构建通用插件-->
     <build>
         <plugins>
             <plugin>
@@ -164,67 +164,79 @@
         </plugins>
     </build>
 
+    <!--    &lt;!&ndash;snapshotRepository地址，我们需要上传的地址，申请成功后会发帖告诉你地址的&ndash;&gt;-->
+    <!--    <distributionManagement>-->
+    <!--        <snapshotRepository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>-->
+    <!--        </snapshotRepository>-->
+    <!--        <repository>-->
+    <!--            <id>ossrh</id>-->
+    <!--            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+    <!--        </repository>-->
+    <!--    </distributionManagement>-->
 
-    <profiles>
-        <profile>
-            <id>release</id>
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>ossrh</id>
-                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
-                </snapshotRepository>
-                <repository>
-                    <id>ossrh</id>
-                    <url>https://s01.oss.sonatype.orgservice/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
-            <build>
-                <plugins>
-                    <!-- 打包源 -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>3.2.1</version>
-                        <executions>
-                            <execution>
-                                <id>oss</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <!-- Gpg 签证 -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
-                        <executions>
-                            <execution>
-                                <id>ossrh</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <!--发布源地址-->
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.7</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>ossrh</serverId>
-                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+
+    <!--    <profiles>-->
+    <!--        <profile>-->
+    <!--            <id>release</id>-->
+    <!--            <distributionManagement>-->
+    <!--                <snapshotRepository>-->
+    <!--                    <id>ossrh</id>-->
+    <!--                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>-->
+    <!--                </snapshotRepository>-->
+    <!--                <repository>-->
+    <!--                    <id>ossrh</id>-->
+    <!--                    <url>https://s01.oss.sonatype.orgservice/local/staging/deploy/maven2/</url>-->
+    <!--                </repository>-->
+    <!--            </distributionManagement>-->
+    <!--            <build>-->
+    <!--                <plugins>-->
+    <!--                    &lt;!&ndash; 打包源 &ndash;&gt;-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-source-plugin</artifactId>-->
+    <!--                        <version>3.2.1</version>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <id>oss</id>-->
+    <!--                                <phase>package</phase>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>jar-no-fork</goal>-->
+    <!--                                </goals>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--                    &lt;!&ndash; Gpg 签证 &ndash;&gt;-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-gpg-plugin</artifactId>-->
+    <!--                        <version>1.5</version>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <id>ossrh</id>-->
+    <!--                                <phase>verify</phase>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>sign</goal>-->
+    <!--                                </goals>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--                    &lt;!&ndash;发布源地址&ndash;&gt;-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.sonatype.plugins</groupId>-->
+    <!--                        <artifactId>nexus-staging-maven-plugin</artifactId>-->
+    <!--                        <version>1.6.7</version>-->
+    <!--                        <extensions>true</extensions>-->
+    <!--                        <configuration>-->
+    <!--                            <serverId>ossrh</serverId>-->
+    <!--                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>-->
+    <!--                            <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+    <!--                        </configuration>-->
+    <!--                    </plugin>-->
+    <!--                </plugins>-->
+    <!--            </build>-->
+    <!--        </profile>-->
+    <!--    </profiles>-->
 
 </project>
