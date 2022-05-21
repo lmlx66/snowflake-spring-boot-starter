@@ -112,16 +112,22 @@ IdGeneratorProperties是基础配置类实体映射类，其内部属性即我�
 public class IdGeneratorConfig {
     @Bean
     public YitIdGenerator yitIdGenerator() {
-        //准备基础配置类，在此可以配置基础信息
-        IdGeneratorProperties idGeneratorProperties = new IdGeneratorProperties();
-        idGeneratorProperties.setWorkerId((short) 6);
-        idGeneratorProperties.setWorkerIdBitLength((byte) 3);
-        idGeneratorProperties.setBaseTime(1652943536440L);
+         //准备基础配置类，在此可以配置基础信息
+        IdGeneratorOptions idGeneratorOptions = new IdGeneratorOptions();
+        idGeneratorOptions.setMonomer(false); //设置单机模式为false
+        idGeneratorOptions.setWorkerId((short) 6); //设置机器码为6
+        idGeneratorOptions.setWorkerIdBitLength((byte) 3); //设置机器码位长为3
         //装载id生成器的配置文件
-        return new YitIdGenerator(idGeneratorProperties);
+        return new YitIdGenerator(idGeneratorOptions);
     }
 }
 ```
+
+
+
+#### 5.2.1、配置优先级
+
+请注意我们的优先级，本地配置文件配置（本地yaml文件或properties文件） < 配置类配置（自己创建bean） < 配置中心配置（如nacos-config配置）
 
 
 

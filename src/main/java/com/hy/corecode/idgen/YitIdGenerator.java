@@ -4,11 +4,9 @@ package com.hy.corecode.idgen;
 import com.hy.corecode.contract.IIdGenerator;
 import com.hy.corecode.contract.ISnowWorker;
 import com.hy.corecode.contract.IdGeneratorException;
-import com.hy.corecode.contract.IdGeneratorOptions;
+import com.hy.properties.IdGeneratorOptions;
 import com.hy.corecode.core.SnowWorkerM1;
 import com.hy.corecode.core.SnowWorkerM2;
-import com.hy.properties.IdGeneratorProperties;
-import org.springframework.beans.BeanUtils;
 
 /**
  * @author: 王富贵
@@ -24,17 +22,10 @@ public class YitIdGenerator implements IIdGenerator {
      *
      * @throws IdGeneratorException
      */
-    public YitIdGenerator(IdGeneratorProperties idGeneratorProperties) throws IdGeneratorException {
-        //构建参数
-        IdGeneratorOptions options = new IdGeneratorOptions();
+    public YitIdGenerator(IdGeneratorOptions options) throws IdGeneratorException {
         //如果是单体项目,机器码位长就为1,否则就是6，如果用户改了位长，以他的为主
-        if (Boolean.TRUE.equals(idGeneratorProperties.getMonomer())) {
+        if (Boolean.TRUE.equals(options.getMonomer())) {
             options.setWorkerIdBitLength((byte) 1);
-        }
-        BeanUtils.copyProperties(idGeneratorProperties, options);
-
-        if (options == null) {
-            throw new IdGeneratorException("options error.");
         }
 
         // 1.BaseTime

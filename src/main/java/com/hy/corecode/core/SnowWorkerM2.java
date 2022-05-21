@@ -2,7 +2,7 @@ package com.hy.corecode.core;
 
 
 import com.hy.corecode.contract.IdGeneratorException;
-import com.hy.corecode.contract.IdGeneratorOptions;
+import com.hy.properties.IdGeneratorOptions;
 
 /**
  * @author: 王富贵
