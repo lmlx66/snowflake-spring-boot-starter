@@ -44,10 +44,20 @@
 
 
 
-2.静态调用方法即可
+2.注入生成器并调用
 
 ``` java
-Long id = YitIdGenerator.next();
+@RestController
+public class IdController {
+   
+    @Autowired
+    private YitIdGenerator yitIdGenerator;
+    
+    @GetMapping("getId")
+    public long getId(){
+        return yitIdGenerator.next();
+    } 
+}
 ```
 
 是不是非常简单呢？

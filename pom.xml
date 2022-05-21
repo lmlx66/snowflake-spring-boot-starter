@@ -31,8 +31,9 @@
         <maven.compiler.target>11</maven.compiler.target>
 
         <!--依赖插件-->
-        <spring-boot.version>2.6.7</spring-boot.version>
         <spring-cloud-context.version>3.0.2</spring-cloud-context.version>
+        <swagger-annotations.version>1.6.6</swagger-annotations.version>
+        <lombok.version>1.18.24</lombok.version>
 
         <!--maven插件-->
         <compile.version>8</compile.version>
@@ -43,12 +44,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
-        <!--AOP相关依赖-->
-        <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjweaver</artifactId>
         </dependency>
 
         <!--产生配置元数据，在配置文件配置时，能够提示-->
@@ -65,11 +60,11 @@
             <scope>provided</scope> <!--编译文件不生成-->
         </dependency>
 
-        <!--主要是为了引入@RefreshScope 动态感知配置文件依赖-->
+        <!--swagger注释-->
         <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-context</artifactId>
-            <version>${spring-cloud-context.version}</version>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotations.version}</version>
         </dependency>
     </dependencies>
 
