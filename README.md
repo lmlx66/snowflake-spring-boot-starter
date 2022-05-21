@@ -1,4 +1,4 @@
-# 开箱即用的雪花漂移算法（yitter-idgenerator-spring-boot-starter）
+# 开箱即用的java雪花算法（yitter-idgenerator-spring-boot-starter）
 
 ### 1、介绍
 
