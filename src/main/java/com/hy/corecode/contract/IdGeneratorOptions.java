@@ -1,10 +1,5 @@
-/*
- * 版权属于：yitter(yitter@126.com)
- * 开源地址：https://github.com/yitter/idgenerator
- */
 package com.hy.corecode.contract;
 
-import com.hy.properties.IdGeneratorProperties;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
