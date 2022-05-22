@@ -34,13 +34,17 @@
 
 ### 4、如何使用
 
-1.引入maven依赖。当然也可以下载源代码。版本号与核心代码包版本保持一致。
+#### 4.1、springboot使用
+
+1.引入maven依赖。
+
+[yitter-idgenerator-spring-boot-starter的maven仓库地址](https://repo1.maven.org/maven2/io/github/lmlx66/yitter-idgenerator-spring-boot-starter/)
 
 ``` xml
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
-  <version>1.0.7</version>
+  <version>1.0.8</version>
 </dependency>
 ```
 
@@ -73,6 +77,55 @@ yitter:
   monomer: false # 不开启单机模式
   method: 1 # 1为雪花漂移算法，2为传统算法
   worker-id: 2 # 机器码id
+```
+
+
+
+#### 4.1、mybatis-plus依赖
+
+我们也适配了mybatis-plus主键生成策略，当然你引入了此依赖，就不需要引入上面springboot的依赖了
+
+1.引入依赖
+
+[maven仓库地址](https://repo1.maven.org/maven2/io/github/lmlx66/yitter-idgenerator-spring-boot-starter/)
+
+``` xml
+<dependency>
+  <groupId>io.github.lmlx66</groupId>
+  <artifactId>yitter-idgenerator-mybatisPlus-spring-boot-starter</artifactId>
+  <version>1.0.8</version>
+</dependency>
+```
+
+
+
+2.使用
+
+直接注解使用，最重要的是`type`为`IdType.INPUT`，则会使用我们自己的bean，如下所示：
+
+```java
+public class YourEntity {
+    @TableId(value = "id", type = IdType.INPUT)
+    private String id;
+}
+```
+
+
+
+3.当然我们也可以跟上面一样装配生成器`YitIdGenerator`并调用`next`方法
+
+``` java
+@RestController
+public class IdController {
+   
+    @Autowired
+    private YitIdGenerator yitIdGenerator;
+    
+    @GetMapping("getId")
+    public long getId(){
+        return yitIdGenerator.next();
+    } 
+}
 ```
 
 
@@ -127,7 +180,7 @@ public class IdGeneratorConfig {
 
 #### 5.2.1、配置优先级
 
-请注意我们的优先级，本地配置文件配置（本地yaml文件或properties文件） < 配置类配置（自己创建bean） < 配置中心配置（如nacos-config配置）
+请注意我们的优先级，本地配置文件配置（本地yaml文件或properties文件） **<** 配置类配置（自己创建bean） **<** 配置中心配置（如nacos-config配置）
 
 
 
