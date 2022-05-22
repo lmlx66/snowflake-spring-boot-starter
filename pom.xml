@@ -175,7 +175,7 @@
 
     <profiles>
         <profile>
-            <id>release</id>
+            <id>sonatype</id>
             <distributionManagement>
                 <snapshotRepository>
                     <id>ossrh</id>
