@@ -83,7 +83,7 @@ yitter:
 
 #### 4.1、mybatis-plus依赖
 
-我们也适配了mybatis-plus主键生成策略，当然你引入了此依赖，就不需要引入上面springboot的依赖了
+我们也适配了mybatis-plus主键生成策略，开源地址：[整合mybatisPlus的雪花漂移算法](整合mybatisPlus的雪花漂移算法),当然你引入了此依赖，就不需要引入上面springboot的依赖了
 
 1.引入依赖
 

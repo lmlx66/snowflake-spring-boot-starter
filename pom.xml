@@ -172,7 +172,6 @@
         </repository>
     </distributionManagement>
 
-
     <profiles>
         <profile>
             <id>sonatype</id>
