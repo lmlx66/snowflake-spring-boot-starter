@@ -36,9 +36,11 @@
 
 #### 4.1、springboot使用
 
-1.引入maven依赖。
+1.引入maven
 
 [yitter-idgenerator-spring-boot-starter的maven仓库地址](https://repo1.maven.org/maven2/io/github/lmlx66/yitter-idgenerator-spring-boot-starter/)
+
+maven：
 
 ``` xml
 <dependency>
@@ -46,6 +48,12 @@
   <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
   <version>1.0.8</version>
 </dependency>
+```
+
+Gradle：
+
+``` groovy
+implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.8'
 ```
 
 
@@ -89,12 +97,20 @@ yitter:
 
 [maven仓库地址](https://repo1.maven.org/maven2/io/github/lmlx66/yitter-idgenerator-spring-boot-starter/)
 
+maven：
+
 ``` xml
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-mybatisPlus-spring-boot-starter</artifactId>
   <version>1.0.8</version>
 </dependency>
+```
+
+Gradle：
+
+``` groovy
+implementation 'io.github.lmlx66:yitter-idgenerator-mybatisPlus-spring-boot-starter:1.0.8'
 ```
 
 
