@@ -48,15 +48,23 @@ public class SnowWorkerM1 implements ISnowWorker {
      */
     protected final int TopOverCostCount;
 
-    //锁对象
+    /**
+     * 锁对象
+     */
     protected final static byte[] _SyncLock = new byte[0];
 
-    //时间戳位移位
+    /**
+     * 时间戳位移位
+     */
     protected final byte _TimestampShift;
 
-    //当前序列号
+    /**
+     * 当前序列号
+     */
     protected short _CurrentSeqNumber;
-    //最后一次生成id的时间
+    /**
+     * 最后一次生成id的时间
+     */
     protected long _LastTimeTick = 0;
 
     protected long _TurnBackTimeTick = 0;
