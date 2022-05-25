@@ -51,6 +51,7 @@ public class SnowWorkerM1 implements ISnowWorker {
     //锁对象
     protected final static byte[] _SyncLock = new byte[0];
 
+    //时间戳位移位
     protected final byte _TimestampShift;
 
     //当前序列号
@@ -209,23 +210,30 @@ public class SnowWorkerM1 implements ISnowWorker {
     }
 
     /**
-     * 计算id的方法
+     * 正常情况下，采用位移拼接结果id
      *
-     * @param useTimeTick 使用的时间错
+     * @param useTimeTick 时间戳差值
      * @return id
      */
     private long CalcId(long useTimeTick) {
-        long result = ((useTimeTick << _TimestampShift) +
-                ((long) WorkerId << SeqBitLength) +
-                (int) _CurrentSeqNumber);
+        long result = ((useTimeTick << _TimestampShift) + //时间差数，时间戳位移 = 机器码位长 + 序数位长
+                ((long) WorkerId << SeqBitLength) + //机器码数，机器码位移 = 序数位长
+                (int) _CurrentSeqNumber); // 直接拼接使用序数
 
         _CurrentSeqNumber++;
         return result;
     }
 
+    /**
+     * 发生时间回拨的时候，采用位移拼接结果id
+     *
+     * @param useTimeTick 时间戳差值
+     * @return id
+     */
     private long CalcTurnBackId(long useTimeTick) {
-        long result = ((useTimeTick << _TimestampShift) +
-                ((long) WorkerId << SeqBitLength) + _TurnBackIndex);
+        long result = ((useTimeTick << _TimestampShift)
+                + ((long) WorkerId << SeqBitLength)
+                + _TurnBackIndex);
 
         _TurnBackTimeTick--;
         return result;
