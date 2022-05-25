@@ -61,6 +61,11 @@ public class SnowWorkerM1 implements ISnowWorker {
     protected int _GenCountInOneTerm = 0;
     protected int _TermIndex = 0;
 
+    /**
+     * 构造参数准备
+     *
+     * @param options
+     */
     public SnowWorkerM1(IdGeneratorOptions options) {
         BaseTime = options.BaseTime != 0 ? options.BaseTime : 1582136402000L;
         WorkerIdBitLength = options.WorkerIdBitLength == 0 ? 6 : options.WorkerIdBitLength;
@@ -136,6 +141,12 @@ public class SnowWorkerM1 implements ISnowWorker {
         return CalcId(_LastTimeTick);
     }
 
+    /**
+     * 正常的获取下一个id，生成id核心代码
+     *
+     * @return 下一个id
+     * @throws IdGeneratorException
+     */
     private long NextNormalId() throws IdGeneratorException {
         long currentTimeTick = GetCurrentTimeTick();
 
@@ -151,12 +162,6 @@ public class SnowWorkerM1 implements ISnowWorker {
                 }
                 BeginTurnBackAction(_TurnBackTimeTick);
             }
-
-//            try {
-//                 Thread.sleep(1);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
 
             return CalcTurnBackId(_TurnBackTimeTick);
         }
@@ -207,6 +212,11 @@ public class SnowWorkerM1 implements ISnowWorker {
         return result;
     }
 
+    /**
+     * 获取当前时间 - 系统时间差值
+     *
+     * @return 时间差值
+     */
     protected long GetCurrentTimeTick() {
         long millis = System.currentTimeMillis();
         return millis - BaseTime;
