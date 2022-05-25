@@ -237,7 +237,7 @@ public class IdGeneratorConfig {
 
 #### 6.2、异常处理
 
-IdGeneratorException继承了RuntimeException，是此id生成器默认的异常，假如你需要捕获异常，请捕获它。
+`IdGeneratorException`为此id生成器唯一且默认的异常类，他继承了`RuntimeException`，假如你需要捕获异常，请捕获它。
 
 
 
