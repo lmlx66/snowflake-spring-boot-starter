@@ -6,6 +6,7 @@
 
 本项目依赖于[SnowFlake IdGenerator](https://gitee.com/yitter/idgenerator)核心代码，加入springboot自动配置，从而达到开箱即用的效果。该算法在缩短ID长度的同时，具备极高瞬时并发处理能力（50W/0.1s）。并且支持回拨。
 
+**如果你觉得好用，请点一个star，这对我来说非常重要，谢谢！**
 
 
 ### 2、技术支持
