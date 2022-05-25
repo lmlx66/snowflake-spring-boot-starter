@@ -48,11 +48,16 @@ public class SnowWorkerM1 implements ISnowWorker {
      */
     protected final int TopOverCostCount;
 
-    protected final byte _TimestampShift;
+    //锁对象
     protected final static byte[] _SyncLock = new byte[0];
 
+    protected final byte _TimestampShift;
+
+    //当前序列号
     protected short _CurrentSeqNumber;
+    //最后一次生成id的时间
     protected long _LastTimeTick = 0;
+
     protected long _TurnBackTimeTick = 0;
     protected byte _TurnBackIndex = 0;
 
@@ -100,9 +105,15 @@ public class SnowWorkerM1 implements ISnowWorker {
 
     }
 
+    /**
+     * 超出该毫秒内的支持的生成数
+     *
+     * @return
+     */
     private long NextOverCostId() {
         long currentTimeTick = GetCurrentTimeTick();
 
+        //如果出现时间回拨
         if (currentTimeTick > _LastTimeTick) {
             EndOverCostAction(currentTimeTick);
 
@@ -114,6 +125,7 @@ public class SnowWorkerM1 implements ISnowWorker {
 
             return CalcId(_LastTimeTick);
         }
+
 
         if (_OverCostCountInOneTerm >= TopOverCostCount) {
             EndOverCostAction(currentTimeTick);
@@ -150,6 +162,7 @@ public class SnowWorkerM1 implements ISnowWorker {
     private long NextNormalId() throws IdGeneratorException {
         long currentTimeTick = GetCurrentTimeTick();
 
+        //如果出现时间回拨
         if (currentTimeTick < _LastTimeTick) {
             if (_TurnBackTimeTick < 1) {
                 _TurnBackTimeTick = _LastTimeTick - 1;
@@ -195,6 +208,12 @@ public class SnowWorkerM1 implements ISnowWorker {
         return CalcId(_LastTimeTick);
     }
 
+    /**
+     * 计算id的方法
+     *
+     * @param useTimeTick 使用的时间错
+     * @return id
+     */
     private long CalcId(long useTimeTick) {
         long result = ((useTimeTick << _TimestampShift) +
                 ((long) WorkerId << SeqBitLength) +
