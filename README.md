@@ -46,14 +46,14 @@ maven：
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
-  <version>1.0.8</version>
+  <version>1.0.9</version>
 </dependency>
 ```
 
 Gradle：
 
 ``` groovy
-implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.8'
+implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.9'
 ```
 
 
@@ -102,14 +102,14 @@ maven：
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-mybatisPlus-spring-boot-starter</artifactId>
-  <version>1.0.8</version>
+  <version>1.0.9</version>
 </dependency>
 ```
 
 Gradle：
 
 ``` groovy
-implementation 'io.github.lmlx66:yitter-idgenerator-mybatisPlus-spring-boot-starter:1.0.8'
+implementation 'io.github.lmlx66:yitter-idgenerator-mybatisPlus-spring-boot-starter:1.0.9'
 ```
 
 
@@ -235,7 +235,13 @@ public class IdGeneratorConfig {
 
 
 
-#### 6.2、集成算法
+#### 6.2、异常处理
+
+IdGeneratorException继承了RuntimeException，是此id生成器默认的异常，假如你需要捕获异常，请捕获它。
+
+
+
+#### 6.3、集成算法
 
 1️⃣ 用单例模式调用。外部集成方使用更多的实例并行调用本算法，不会增加ID产出效能，因为本算法采用单线程生成ID。
 
@@ -257,7 +263,7 @@ public class IdGeneratorConfig {
 
 
 
-#### 6.3、配置变更
+#### 6.4、配置变更
 
 配置变更指是系统运行一段时间后，再调整运行参数（IdGeneratorOptions 选项值），请注意：
 
@@ -271,7 +277,7 @@ public class IdGeneratorConfig {
 
 
 
-#### 6.4、最佳实践
+#### 6.5、最佳实践
 
 1. 机器码请务必唯一，我们可以使用redis自增结合nacos-config或其他方法进行自动配置。也可以使用该算法本身等特性进行k8s集成。
 2. 序数位直接决定了本算法一毫秒内能够生成多少id，如果超过此数量，则会阻塞住。请务必测试好你的并发。
