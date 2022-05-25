@@ -6,7 +6,6 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 
-
 /**
  * @author: 王富贵
  * @description: 雪花算法配置参数
@@ -28,13 +27,6 @@ public class IdGeneratorOptions {
     public short Method = 1;
 
     /**
-     * 是否是单体架构
-     * 默认为true单体
-     */
-    @ApiModelProperty(value = "是否是单体架构", notes = "默认为true单体，机器码位长1bit，机器码默认0，优先级最低，有其他配置都会优先使用其他配置")
-    public Boolean Monomer = Boolean.TRUE;
-
-    /**
      * 基础时间（ms单位）
      * 不能超过当前系统时间
      * 默认为2022-01-01 00:00:00
@@ -54,7 +46,7 @@ public class IdGeneratorOptions {
      * 默认值6，取值范围 [1, 15]（要求：序列数位长+机器码位长不超过22）
      */
     @ApiModelProperty(value = "机器码位长", notes = "决定项目集群能使用id最大机器数， 默认值6，取值范围 [1, 15]（要求：序列数位长+机器码位长不超过22）")
-    public byte WorkerIdBitLength = 6;
+    public byte WorkerIdBitLength = 1;
 
     /**
      * 序列数位长

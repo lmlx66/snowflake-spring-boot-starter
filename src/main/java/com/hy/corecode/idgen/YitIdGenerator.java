@@ -14,7 +14,6 @@ import com.hy.corecode.core.SnowWorkerM2;
  * @createTime: 2022年05月19日 11:19:59
  */
 public class YitIdGenerator implements IIdGenerator {
-
     private static ISnowWorker _SnowWorker = null;
 
     /**
@@ -23,11 +22,6 @@ public class YitIdGenerator implements IIdGenerator {
      * @throws IdGeneratorException
      */
     public YitIdGenerator(IdGeneratorOptions options) throws IdGeneratorException {
-        //如果是单体项目,机器码位长就为1,否则就是6，如果用户改了位长，以他的为主
-        if (Boolean.TRUE.equals(options.getMonomer())) {
-            options.setWorkerIdBitLength((byte) 1);
-        }
-
         // 1.BaseTime
         if (options.BaseTime < 315504000000L || options.BaseTime > System.currentTimeMillis()) {
             throw new IdGeneratorException("BaseTime error.");
