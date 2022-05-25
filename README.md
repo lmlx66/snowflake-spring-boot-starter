@@ -160,8 +160,8 @@ public class IdController {
 | WorkerIdBitLength | 1              | 机器码位长（能表示机器码的最大值）     |
 | WorkerId          | 0              | 机器码（当前系统的机器码）             |
 | SeqBitLength      | 6              | 序列数位长（能表示机器码的最大序列数） |
-| MaxSeqNumber      | 0（不限定）    | 最大序列数（含）                       |
-| MinSeqNumber      | 0（不限定）    | 最小序列数（含）                       |
+| MaxSeqNumber      | 0（不限制）    | 最大序列数（含）                       |
+| MinSeqNumber      | 0（不限制）    | 最小序列数（含）                       |
 | TopOverCostCount  | 2000           | 最大漂移次数，与计算能力有关           |
 
 
