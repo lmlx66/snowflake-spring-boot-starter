@@ -181,7 +181,6 @@ public class IdGeneratorConfig {
     public YitIdGenerator yitIdGenerator() {
          //准备基础配置类，在此可以配置基础信息
         IdGeneratorOptions idGeneratorOptions = new IdGeneratorOptions();
-        idGeneratorOptions.setMonomer(false); //设置单机模式为false
         idGeneratorOptions.setWorkerId((short) 6); //设置机器码为6
         idGeneratorOptions.setWorkerIdBitLength((byte) 3); //设置机器码位长为3
         //装载id生成器的配置文件
