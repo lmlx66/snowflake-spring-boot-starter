@@ -47,14 +47,14 @@ maven：
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
-  <version>1.0.9</version>
+  <version>1.0.10-RELEASE</version>
 </dependency>
 ```
 
 Gradle：
 
 ``` groovy
-implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.9'
+implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.10-RELEASE'
 ```
 
 
