@@ -47,7 +47,7 @@ public class YitIdGenerator implements IIdGenerator {
         // 4. DataCenterId
         int maxDataCenterId = (1 << options.DataCenterIdBitLength) - 1;
         if (options.DataCenterId < 0 || options.DataCenterId > maxDataCenterId){
-            throw new IdGeneratorException("DataCenterId error. (range:[0,"+ maxDataCenterId + "]");
+            throw new IdGeneratorException("DataCenterId error. (range:[0,"+ maxDataCenterId + "])");
         }
 
 
