@@ -49,6 +49,20 @@ public class IdGeneratorOptions {
     public byte WorkerIdBitLength = 1;
 
     /**
+     * 数据中心id
+     * 必须由外部设定，最大值 2^DataCenterIdBitLength-1
+     */
+    @ApiModelProperty(value = "数据中心id", notes = "该实例集群机器码，必须唯一，必须由外部设定，最大值 2^DataCenterIdBitLength-1")
+    public short DataCenterId = 0;
+
+    /**
+     * 数据中心id位长
+     * 默认值0,取值范围[0,6],也就是说最多支持集群配置 2 ^ 6 = 64 个数据中心
+     */
+    @ApiModelProperty(value = "数据中心id位长", notes = "决定项目集群能使用id最大机器数， 默认值0（取值范围[0,6],也就是说最多支持集群配置 2 ^ 6 = 64 个数据中心）")
+    public byte DataCenterIdBitLength = 0;
+
+    /**
      * 序列数位长
      * 默认值6，取值范围 [3, 21]（要求：序列数位长+机器码位长不超过22）
      */

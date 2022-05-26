@@ -9,8 +9,8 @@
     <!--工件id，引入时候与其一致-->
     <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
     <!--版本号-->
-    <version>1.0.9</version>
-    <!--<version>1.0.9-SNAPSHOT</version>-->
+    <!--<version>1.0.9</version>-->
+    <version>1.0.10-SNAPSHOT</version>
     <!--项目描述-->
     <description>yitter雪花漂移算法自动配置启动模块</description>
     <!--打包方式-->

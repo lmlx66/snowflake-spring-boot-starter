@@ -154,16 +154,20 @@ public class IdController {
 
 我们支持在yaml或者properties等配置文件中配置，注意前缀为`yitter`
 
-| 参数名            | 默认值           | 作用                                   |
-| ----------------- |---------------| -------------------------------------- |
-| Method（short）   | 1             | 1表示雪花漂移算法，2表示传统雪花算法   |
-| BaseTime（long）  | 1640966400000 | 基础时间，为2022-01-01 00:00:00        |
-| WorkerIdBitLength | 1             | 机器码位长（能表示机器码的最大值）     |
-| WorkerId          | 0             | 机器码（当前系统的机器码）             |
-| SeqBitLength      | 6             | 序列数位长（能表示机器码的最大序列数） |
-| MaxSeqNumber      | 0（不限制）        | 最大序列数（含）                       |
-| MinSeqNumber      | 5（不限制）        | 最小序列数（含）                       |
-| TopOverCostCount  | 2000          | 最大漂移次数，与计算能力有关           |
+| 参数名                | 默认值        | 作用                                            |
+| --------------------- | ------------- | ----------------------------------------------- |
+| Method（short）       | 1             | 1表示雪花漂移算法，2表示传统雪花算法            |
+| BaseTime（long）      | 1640966400000 | 基础时间，为2022-01-01 00:00:00                 |
+| DataCenterId          | 0             | 数据中心id                                      |
+| DataCenterIdBitLength | 0             | 数据中心id位长，默认为0表示不开启数据中心id功能 |
+| WorkerIdBitLength     | 1             | 机器码位长（能表示机器码的最大值）              |
+| WorkerId              | 0             | 机器码（当前系统的机器码）                      |
+| SeqBitLength          | 6             | 序列数位长（能表示机器码的最大序列数）          |
+| MaxSeqNumber          | 0（不限制）   | 最大序列数（含）                                |
+| MinSeqNumber          | 5（不限制）   | 最小序列数（含）                                |
+| TopOverCostCount      | 2000          | 最大漂移次数，与计算能力有关                    |
+
+注意：DataCenterId和DataCenterIdBitLength两个数据中心配置，是v1.0.10-SNAPSHOT的新增功能，还在内测阶段。
 
 
 
@@ -196,6 +200,8 @@ public class IdGeneratorConfig {
 
 请注意我们的优先级，本地配置文件配置（本地yaml文件或properties文件） **<** 配置类配置（自己创建bean） **<** 配置中心配置（如nacos-config配置）
 
+原因如下：配置中心配置修改时会重新加载bean
+
 
 
 #### 5.3、参数详解
@@ -204,9 +210,9 @@ public class IdGeneratorConfig {
 
 ❄ ***BaseTime***，基础时间（也称：基点时间、原点时间、纪元时间），默认值为：**2022-01-01 00:00:00**，是毫秒时间戳（是整数，.NET是DatetTime类型），作用是：用生成ID时的系统时间与基础时间的差值（毫秒数）作为生成ID的时间戳。基础时间一般无需设置，如果觉得默认值太老，你可以重新设置，不过要注意，这个值以后最好不变。
 
-❄ ***WorkerIdBitLength***，机器码位长，决定 WorkerId 的最大值，**默认值1**，取值范围 [1, 19]，实际上有些语言采用 无符号 ushort (uint16) 类型接收该参数，所以最大值是16，如果是采用 有符号 short (int16)，则最大值为15。
+❄ **WorkerId**，机器码，**最重要参数**，**默认值0**，必须 **全局唯一**（或相同 DataCenterId 内唯一），必须 **程序设定**，缺省条件（WorkerIdBitLength取默认值）时最大值63，理论最大值 2^WorkerIdBitLength-1（不同实现语言可能会限定在 65535 或 32767，原理同 WorkerIdBitLength 规则）。不同机器或不同应用实例 **不能相同**，你可通过应用程序配置该值，也可通过调用外部服务获取值。针对自动注册WorkerId需求，本算法提供默认实现：通过 redis 自动注册 WorkerId 的动态库，详见“Tools\AutoRegisterWorkerId”。
 
-❄ **WorkerId**，机器码，**最重要参数**，默认值为；1，必须 **全局唯一**（或相同 DataCenterId 内唯一），必须 **程序设定**，缺省条件（WorkerIdBitLength取默认值）时最大值63，理论最大值 2^WorkerIdBitLength-1（不同实现语言可能会限定在 65535 或 32767，原理同 WorkerIdBitLength 规则）。不同机器或不同应用实例 **不能相同**，你可通过应用程序配置该值，也可通过调用外部服务获取值。针对自动注册WorkerId需求，本算法提供默认实现：通过 redis 自动注册 WorkerId 的动态库，详见“Tools\AutoRegisterWorkerId”。
+❄ ***WorkerIdBitLength***，机器码位长，决定 WorkerId 的最大值，**默认值1**，取值范围 [1, 19]，实际上有些语言采用 无符号 ushort (uint16) 类型接收该参数，所以最大值是16，如果是采用 有符号 short (int16)，则最大值为15。
 
 **特别提示**：如果一台服务器部署多个独立服务，需要为每个服务指定不同的 WorkerId。
 
@@ -215,6 +221,12 @@ public class IdGeneratorConfig {
 ❄ ***MinSeqNumber***，最小序列数，**默认值5**，取值范围 [5, MaxSeqNumber]，每毫秒的前5个序列数对应编号0-4是保留位，其中0是手工插入新值预留位，1-4是时间回拨相应预留位。
 
 ❄ ***MaxSeqNumber***，最大序列数，设置范围 [MinSeqNumber, 2^SeqBitLength-1]，**默认值0**，真实最大序列数取最大值（2^SeqBitLength-1），不为0时，取其为真实最大序列数，一般无需设置，除非多机共享WorkerId分段生成ID（此时还要正确设置最小序列数）。
+
+注意：DataCenterId和DataCenterIdBitLength两个数据中心配置，是v1.0.10-SNAPSHOT的新增功能，还在内测阶段。
+
+❄**DataCenterId**，  数据中心id，**默认值0**，必须 **全局唯一**（或相同 DataCenterId 内唯一），必须 **程序设定**，缺省条件（DataCenterIdBitLength取最大值6）时最大值63。
+
+❄**DataCenterIdBitLength**，数据中心位长，决定 DataCenterId 的最大值，**默认值为0**，表示不开启区分数据中心功能，取值范围[0,6]。
 
 
 

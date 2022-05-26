@@ -31,8 +31,8 @@ public class YitIdGenerator implements IIdGenerator {
         if (options.WorkerIdBitLength <= 0) {
             throw new IdGeneratorException("WorkerIdBitLength error.(range:[1, 21])");
         }
-        if (options.WorkerIdBitLength + options.SeqBitLength > 22) {
-            throw new IdGeneratorException("error：WorkerIdBitLength + SeqBitLength <= 22");
+        if (options.WorkerIdBitLength + options.SeqBitLength + options.DataCenterIdBitLength > 22) {
+            throw new IdGeneratorException("error：WorkerIdBitLength + SeqBitLength + DataCenterIdBitLength <= 22");
         }
 
         // 3.WorkerId
@@ -44,12 +44,19 @@ public class YitIdGenerator implements IIdGenerator {
             throw new IdGeneratorException("WorkerId error. (range:[0, " + (maxWorkerIdNumber > 0 ? maxWorkerIdNumber : 63) + "]");
         }
 
-        // 4.SeqBitLength
+        // 4. DataCenterId
+        int maxDataCenterId = (1 << options.DataCenterIdBitLength) - 1;
+        if (options.DataCenterId < 0 || options.DataCenterId > maxDataCenterId){
+            throw new IdGeneratorException("DataCenterId error. (range:[0,"+ maxDataCenterId + "]");
+        }
+
+
+        // 5.SeqBitLength
         if (options.SeqBitLength < 2 || options.SeqBitLength > 21) {
             throw new IdGeneratorException("SeqBitLength error. (range:[2, 21])");
         }
 
-        // 5.MaxSeqNumber
+        // 6.MaxSeqNumber
         int maxSeqNumber = (1 << options.SeqBitLength) - 1;
         if (maxSeqNumber == 0) {
             maxSeqNumber = 63;
@@ -58,7 +65,7 @@ public class YitIdGenerator implements IIdGenerator {
             throw new IdGeneratorException("MaxSeqNumber error. (range:[1, " + maxSeqNumber + "]");
         }
 
-        // 6.MinSeqNumber
+        // 7.MinSeqNumber
         if (options.MinSeqNumber < 5 || options.MinSeqNumber > maxSeqNumber) {
             throw new IdGeneratorException("MinSeqNumber error. (range:[5, " + maxSeqNumber + "]");
         }

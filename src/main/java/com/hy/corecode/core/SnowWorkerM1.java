@@ -29,6 +29,16 @@ public class SnowWorkerM1 implements ISnowWorker {
     protected final byte WorkerIdBitLength;
 
     /**
+     * 数据中心id
+     */
+    protected final short DataCenterId;
+
+    /**
+     * 数据中心id位长
+     */
+    protected final byte DataCenterIdBitLength;
+
+    /**
      * 自增序列数位长
      */
     protected final byte SeqBitLength;
@@ -59,7 +69,12 @@ public class SnowWorkerM1 implements ISnowWorker {
     protected final byte _TimestampShift;
 
     /**
-     * 当前序列号
+     * 数据中心id位移
+     */
+    protected final byte _DataCenterShift;
+
+    /**
+     * 当前能使用的序列数id
      */
     protected short _CurrentSeqNumber;
     /**
@@ -93,10 +108,22 @@ public class SnowWorkerM1 implements ISnowWorker {
         WorkerIdBitLength = options.WorkerIdBitLength == 0 ? 6 : options.WorkerIdBitLength;
         WorkerId = options.WorkerId;
         SeqBitLength = options.SeqBitLength == 0 ? 6 : options.SeqBitLength;
+
+        //校验DataCenterId，如果DataCenterIdBitLength为0，那么DataCenterId强制为0
+        if (options.DataCenterIdBitLength == 0) {
+            DataCenterId = 0;
+        } else {
+            DataCenterId = options.DataCenterId;
+        }
+        DataCenterIdBitLength = options.DataCenterIdBitLength;
+
         MaxSeqNumber = options.MaxSeqNumber <= 0 ? (1 << SeqBitLength) - 1 : options.MaxSeqNumber;
         MinSeqNumber = options.MinSeqNumber;
         TopOverCostCount = options.TopOverCostCount == 0 ? 2000 : options.TopOverCostCount;
-        _TimestampShift = (byte) (WorkerIdBitLength + SeqBitLength);
+        //时间戳位移为 机器码位长 + 数据中心id位长 + 序数号位长
+        _TimestampShift = (byte) (WorkerIdBitLength + DataCenterIdBitLength + SeqBitLength);
+        //数据中心id位移为 机器码位长 + 数据中心id位长 + 序数号位长
+        _DataCenterShift = (byte) (DataCenterIdBitLength + SeqBitLength);
         _CurrentSeqNumber = MinSeqNumber;
     }
 
@@ -227,33 +254,40 @@ public class SnowWorkerM1 implements ISnowWorker {
     }
 
     /**
-     * 正常情况下，采用位移拼接结果id
+     * 正常情况下，采用左位移拼接结果id
      *
      * @param useTimeTick 时间戳差值
-     * @return id
+     * @return 生成的id
      */
     private long CalcId(long useTimeTick) {
-        long result = ((useTimeTick << _TimestampShift) + //时间差数，时间戳位移 = 机器码位长 + 序数位长
-                ((long) WorkerId << SeqBitLength) + //机器码数，机器码位移 = 序数位长
-                (int) _CurrentSeqNumber); // 直接拼接使用序数
-
+        long result = ShiftStitchingResult(useTimeTick);
         _CurrentSeqNumber++;
         return result;
     }
 
     /**
-     * 发生时间回拨的时候，采用位移拼接结果id
+     * 发生时间回拨的时候，采用左位移拼接结果id
      *
      * @param useTimeTick 时间戳差值
-     * @return id
+     * @return 生成的id
      */
     private long CalcTurnBackId(long useTimeTick) {
-        long result = ((useTimeTick << _TimestampShift)
-                + ((long) WorkerId << SeqBitLength)
-                + _TurnBackIndex);
-
+        long result = ShiftStitchingResult(useTimeTick);
         _TurnBackTimeTick--;
         return result;
+    }
+
+    /**
+     * 左位移拼接返回的id
+     *
+     * @param useTimeTick 时间差值
+     * @return 生成的id
+     */
+    protected long ShiftStitchingResult(long useTimeTick) {
+        return ((useTimeTick << _TimestampShift) + //时间差数，时间戳位移 = 数据中心id位长 + 机器码位长 + 序数位长
+                ((long) DataCenterId << _DataCenterShift) + //数据中心id，数据中心id位移 = 机器码位长 + 序数位长
+                ((long) WorkerId << SeqBitLength) + //机器码数，机器码位移 = 序数位长
+                (int) _CurrentSeqNumber);
     }
 
     /**
@@ -266,6 +300,11 @@ public class SnowWorkerM1 implements ISnowWorker {
         return millis - BaseTime;
     }
 
+    /**
+     * 获取下次时间差值
+     *
+     * @return 时间差值
+     */
     protected long GetNextTimeTick() {
         long tempTimeTicker = GetCurrentTimeTick();
 
@@ -279,7 +318,7 @@ public class SnowWorkerM1 implements ISnowWorker {
     /**
      * 真正执行的方法，判断是否超出当前生成序数的最大值，执行不同的方法
      *
-     * @return
+     * @return 生成的id
      */
     @Override
     public long next() {
