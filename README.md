@@ -196,7 +196,7 @@ public class IdGeneratorConfig {
 
 
 
-#### 5.2.1、配置优先级
+##### 5.2.1、配置优先级
 
 请注意我们的优先级，本地配置文件配置（本地yaml文件或properties文件） **<** 配置类配置（自己创建bean） **<** 配置中心配置（如nacos-config配置）
 
@@ -210,6 +210,10 @@ public class IdGeneratorConfig {
 
 ❄ ***BaseTime***，基础时间（也称：基点时间、原点时间、纪元时间），默认值为：**2022-01-01 00:00:00**，是毫秒时间戳（是整数，.NET是DatetTime类型），作用是：用生成ID时的系统时间与基础时间的差值（毫秒数）作为生成ID的时间戳。基础时间一般无需设置，如果觉得默认值太老，你可以重新设置，不过要注意，这个值以后最好不变。
 
+❄**DataCenterId**，  数据中心id，**默认值0**，必须 **全局唯一**（或相同 DataCenterId 内唯一），必须 **程序设定**，缺省条件（DataCenterIdBitLength取最大值6）时最大值63，表示支持63个数据中心。
+
+❄**DataCenterIdBitLength**，数据中心位长，决定 DataCenterId 的最大值，**默认值为0**，表示不开启区分数据中心功能，取值范围[0,6]。
+
 ❄ **WorkerId**，机器码，**最重要参数**，**默认值0**，必须 **全局唯一**（或相同 DataCenterId 内唯一），必须 **程序设定**，缺省条件（WorkerIdBitLength取默认值）时最大值63，理论最大值 2^WorkerIdBitLength-1（不同实现语言可能会限定在 65535 或 32767，原理同 WorkerIdBitLength 规则）。不同机器或不同应用实例 **不能相同**，你可通过应用程序配置该值，也可通过调用外部服务获取值。针对自动注册WorkerId需求，本算法提供默认实现：通过 redis 自动注册 WorkerId 的动态库，详见“Tools\AutoRegisterWorkerId”。
 
 ❄ ***WorkerIdBitLength***，机器码位长，决定 WorkerId 的最大值，**默认值1**，取值范围 [1, 19]，实际上有些语言采用 无符号 ushort (uint16) 类型接收该参数，所以最大值是16，如果是采用 有符号 short (int16)，则最大值为15。
@@ -222,11 +226,11 @@ public class IdGeneratorConfig {
 
 ❄ ***MaxSeqNumber***，最大序列数，设置范围 [MinSeqNumber, 2^SeqBitLength-1]，**默认值0**，真实最大序列数取最大值（2^SeqBitLength-1），不为0时，取其为真实最大序列数，一般无需设置，除非多机共享WorkerId分段生成ID（此时还要正确设置最小序列数）。
 
-注意：DataCenterId和DataCenterIdBitLength两个数据中心配置，是v1.0.10-SNAPSHOT的新增功能，还在内测阶段。
 
-❄**DataCenterId**，  数据中心id，**默认值0**，必须 **全局唯一**（或相同 DataCenterId 内唯一），必须 **程序设定**，缺省条件（DataCenterIdBitLength取最大值6）时最大值63。
 
-❄**DataCenterIdBitLength**，数据中心位长，决定 DataCenterId 的最大值，**默认值为0**，表示不开启区分数据中心功能，取值范围[0,6]。
+#### 5.4、关于动态配置的问题
+
+请注意：当你使用动态配置时，如果你在配置文件中注销了某个配置，他是不会恢复默认配置的，这和动态配置底层有关。
 
 
 
