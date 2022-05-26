@@ -179,9 +179,9 @@ public class SnowWorkerM1 implements ISnowWorker {
     }
 
     /**
-     * 超出该毫秒内的支持的生成数
+     * 超出该毫秒内的支持的生成数，生成id
      *
-     * @return
+     * @return long生产的id
      */
     private long NextOverCostId() {
         long currentTimeTick = GetCurrentTimeTick();
@@ -276,6 +276,11 @@ public class SnowWorkerM1 implements ISnowWorker {
         return tempTimeTicker;
     }
 
+    /**
+     * 真正执行的方法，判断是否超出当前生成序数的最大值，执行不同的方法
+     *
+     * @return
+     */
     @Override
     public long next() {
         synchronized (_SyncLock) {
