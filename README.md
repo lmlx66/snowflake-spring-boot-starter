@@ -154,16 +154,16 @@ public class IdController {
 
 我们支持在yaml或者properties等配置文件中配置，注意前缀为`yitter`
 
-| 参数名            | 默认值            | 作用                                   |
-| ----------------- |----------------| -------------------------------------- |
-| Method（short）   | 1              | 1表示雪花漂移算法，2表示传统雪花算法   |
-| BaseTime（long）  | 1640966400000L | 基础时间，为2022-01-01 00:00:00        |
-| WorkerIdBitLength | 1              | 机器码位长（能表示机器码的最大值）     |
-| WorkerId          | 0              | 机器码（当前系统的机器码）             |
-| SeqBitLength      | 6              | 序列数位长（能表示机器码的最大序列数） |
-| MaxSeqNumber      | 0（不限制）         | 最大序列数（含）                       |
-| MinSeqNumber      | 5（不限制）         | 最小序列数（含）                       |
-| TopOverCostCount  | 2000           | 最大漂移次数，与计算能力有关           |
+| 参数名            | 默认值           | 作用                                   |
+| ----------------- |---------------| -------------------------------------- |
+| Method（short）   | 1             | 1表示雪花漂移算法，2表示传统雪花算法   |
+| BaseTime（long）  | 1640966400000 | 基础时间，为2022-01-01 00:00:00        |
+| WorkerIdBitLength | 1             | 机器码位长（能表示机器码的最大值）     |
+| WorkerId          | 0             | 机器码（当前系统的机器码）             |
+| SeqBitLength      | 6             | 序列数位长（能表示机器码的最大序列数） |
+| MaxSeqNumber      | 0（不限制）        | 最大序列数（含）                       |
+| MinSeqNumber      | 5（不限制）        | 最小序列数（含）                       |
+| TopOverCostCount  | 2000          | 最大漂移次数，与计算能力有关           |
 
 
 
@@ -212,7 +212,7 @@ public class IdGeneratorConfig {
 
 ❄ ***SeqBitLength***，序列数位长，**默认值6**，取值范围 [3, 21]（建议不小于4），决定每毫秒基础生成的ID个数。规则要求：WorkerIdBitLength + SeqBitLength 不超过 22。
 
-❄ ***MinSeqNumber***，最小序列数，**默认值5**，取值范围 [5, MaxSeqNumber]，每毫秒的前5个序列数对应编号0-4是保留位，其中1-4是时间回拨相应预留位，0是手工新值预留位。
+❄ ***MinSeqNumber***，最小序列数，**默认值5**，取值范围 [5, MaxSeqNumber]，每毫秒的前5个序列数对应编号0-4是保留位，其中0是手工插入新值预留位，1-4是时间回拨相应预留位。
 
 ❄ ***MaxSeqNumber***，最大序列数，设置范围 [MinSeqNumber, 2^SeqBitLength-1]，**默认值0**，真实最大序列数取最大值（2^SeqBitLength-1），不为0时，取其为真实最大序列数，一般无需设置，除非多机共享WorkerId分段生成ID（此时还要正确设置最小序列数）。
 

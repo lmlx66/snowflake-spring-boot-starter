@@ -63,16 +63,24 @@ public class SnowWorkerM1 implements ISnowWorker {
      */
     protected short _CurrentSeqNumber;
     /**
-     * 最后一次生成id的时间
+     * 最后一次生成id的时间戳差值
      */
     protected long _LastTimeTick = 0;
-
+    /**
+     * 回拨时间戳差值
+     */
     protected long _TurnBackTimeTick = 0;
+    /**
+     * 回拨序数位索引
+     */
     protected byte _TurnBackIndex = 0;
 
     protected boolean _IsOverCost = false;
     protected int _OverCostCountInOneTerm = 0;
     protected int _GenCountInOneTerm = 0;
+    /**
+     * 序列数索引，用一个+1，【0,4】预留
+     */
     protected int _TermIndex = 0;
 
     /**
@@ -112,6 +120,62 @@ public class SnowWorkerM1 implements ISnowWorker {
 
     private void EndTurnBackAction(long useTimeTick) {
 
+    }
+
+    /**
+     * 正常的获取下一个id，生成id核心代码
+     *
+     * @return 下一个id
+     * @throws IdGeneratorException
+     */
+    private long NextNormalId() throws IdGeneratorException {
+        long currentTimeTick = GetCurrentTimeTick();
+
+        //如果出现时间回拨
+        if (currentTimeTick < _LastTimeTick) {
+            if (_TurnBackTimeTick < 1) {
+                _TurnBackTimeTick = _LastTimeTick - 1;
+                _TurnBackIndex++;
+
+                // 每毫秒序列数的前5位是预留位，0用于手工新值，1-4是时间回拨次序
+                // 支持4次回拨次序（避免回拨重叠导致ID重复），可无限次回拨（次序循环使用）。
+                if (_TurnBackIndex > 4) {
+                    _TurnBackIndex = 1;
+                }
+                BeginTurnBackAction(_TurnBackTimeTick);
+            }
+
+            return CalcTurnBackId(_TurnBackTimeTick);
+        }
+
+        // 时间追平时，_TurnBackTimeTick清零
+        if (_TurnBackTimeTick > 0) {
+            EndTurnBackAction(_TurnBackTimeTick);
+            _TurnBackTimeTick = 0;
+        }
+
+        if (currentTimeTick > _LastTimeTick) {
+            _LastTimeTick = currentTimeTick;
+            _CurrentSeqNumber = MinSeqNumber;
+
+            return CalcId(_LastTimeTick);
+        }
+
+        //当前序列数
+        if (_CurrentSeqNumber > MaxSeqNumber) {
+            BeginOverCostAction(currentTimeTick);
+
+            _TermIndex++;
+            _LastTimeTick++;
+            _CurrentSeqNumber = MinSeqNumber;
+            _IsOverCost = true;
+            _OverCostCountInOneTerm = 1;
+            _GenCountInOneTerm = 1;
+
+            return CalcId(_LastTimeTick);
+        }
+
+        return CalcId(_LastTimeTick);
     }
 
     /**
@@ -159,61 +223,6 @@ public class SnowWorkerM1 implements ISnowWorker {
         }
 
         _GenCountInOneTerm++;
-        return CalcId(_LastTimeTick);
-    }
-
-    /**
-     * 正常的获取下一个id，生成id核心代码
-     *
-     * @return 下一个id
-     * @throws IdGeneratorException
-     */
-    private long NextNormalId() throws IdGeneratorException {
-        long currentTimeTick = GetCurrentTimeTick();
-
-        //如果出现时间回拨
-        if (currentTimeTick < _LastTimeTick) {
-            if (_TurnBackTimeTick < 1) {
-                _TurnBackTimeTick = _LastTimeTick - 1;
-                _TurnBackIndex++;
-
-                // 每毫秒序列数的前5位是预留位，0用于手工新值，1-4是时间回拨次序
-                // 支持4次回拨次序（避免回拨重叠导致ID重复），可无限次回拨（次序循环使用）。
-                if (_TurnBackIndex > 4) {
-                    _TurnBackIndex = 1;
-                }
-                BeginTurnBackAction(_TurnBackTimeTick);
-            }
-
-            return CalcTurnBackId(_TurnBackTimeTick);
-        }
-
-        // 时间追平时，_TurnBackTimeTick清零
-        if (_TurnBackTimeTick > 0) {
-            EndTurnBackAction(_TurnBackTimeTick);
-            _TurnBackTimeTick = 0;
-        }
-
-        if (currentTimeTick > _LastTimeTick) {
-            _LastTimeTick = currentTimeTick;
-            _CurrentSeqNumber = MinSeqNumber;
-
-            return CalcId(_LastTimeTick);
-        }
-
-        if (_CurrentSeqNumber > MaxSeqNumber) {
-            BeginOverCostAction(currentTimeTick);
-
-            _TermIndex++;
-            _LastTimeTick++;
-            _CurrentSeqNumber = MinSeqNumber;
-            _IsOverCost = true;
-            _OverCostCountInOneTerm = 1;
-            _GenCountInOneTerm = 1;
-
-            return CalcId(_LastTimeTick);
-        }
-
         return CalcId(_LastTimeTick);
     }
 
