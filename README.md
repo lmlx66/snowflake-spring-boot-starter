@@ -35,11 +35,19 @@
 
 ### 4、如何使用
 
-#### 4.1、springboot使用
 
-1.引入maven
 
-[yitter-idgenerator-spring-boot-starter的maven仓库地址](https://repo1.maven.org/maven2/io/github/lmlx66/yitter-idgenerator-spring-boot-starter/)
+#### 4.1、通用步骤
+
+
+
+##### 4.1.1、引入相关maven
+
+[maven仓库地址](https://repo1.maven.org/maven2/io/github/lmlx66/)
+
+
+
+1. springboot不使用动态配置
 
 maven：
 
@@ -59,7 +67,69 @@ implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.10-R
 
 
 
-2.注入生成器`YitIdGenerator`并调用`next`方法
+2. springboot+mybatis-plus主键生成策略不使用动态配置
+
+maven
+
+```
+<dependency>
+  <groupId>io.github.lmlx66</groupId>
+  <artifactId>yitter-idgenerator-mybatisPlus-spring-boot-starter</artifactId>
+  <version>1.0.10-RELEASE</version>
+</dependency>
+```
+
+Gradle：
+
+```
+implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.10-RELEASE'
+```
+
+
+
+3. springboot使用动态配置
+
+maven：
+
+``` xml
+<dependency>
+  <groupId>io.github.lmlx66</groupId>
+  <artifactId>yitter-idgenerator-spring-cloud-starter</artifactId>
+  <version>1.0.10-RELEASE</version>
+</dependency>
+```
+
+Gradle：
+
+``` groovy
+implementation 'io.github.lmlx66:yitter-idgenerator-spring-cloud-starter:1.0.10-RELEASE'
+```
+
+
+
+4. springboot+mybatis-plus主键生成策略使用动态配置
+
+maven
+
+```
+<dependency>
+  <groupId>io.github.lmlx66</groupId>
+  <artifactId>yitter-idgenerator-mybatisPlus-spring-cloud-starter</artifactId>
+  <version>1.0.10-RELEASE</version>
+</dependency>
+```
+
+Gradle：
+
+```
+implementation 'io.github.lmlx66:yitter-idgenerator-spring-cloud-starter:1.0.10-RELEASE'
+```
+
+
+
+##### 4.1.2、使用生成器生成id
+
+注入生成器`YitIdGenerator`并调用`next`方法
 
 ``` java
 @RestController
@@ -79,7 +149,9 @@ public class IdController {
 
 
 
-3.当然我们也可以对简单配置一下
+##### 4.1.3、yaml配置
+
+当然我们也可以对雪花算法简单的配置一下
 
 ```yaml
 yitter:
@@ -89,58 +161,14 @@ yitter:
 
 
 
-#### 4.1、mybatis-plus依赖
+#### 4.2、整合mybatis-plus
 
-我们也适配了mybatis-plus主键生成策略，开源地址：[整合mybatisPlus的雪花漂移算法](整合mybatisPlus的雪花漂移算法),当然你引入了此依赖，就不需要引入上面springboot的依赖了
-
-1.引入依赖
-
-[maven仓库地址](https://repo1.maven.org/maven2/io/github/lmlx66/yitter-idgenerator-spring-boot-starter/)
-
-maven：
-
-``` xml
-<dependency>
-  <groupId>io.github.lmlx66</groupId>
-  <artifactId>yitter-idgenerator-mybatisPlus-spring-boot-starter</artifactId>
-  <version>1.0.9</version>
-</dependency>
-```
-
-Gradle：
-
-``` groovy
-implementation 'io.github.lmlx66:yitter-idgenerator-mybatisPlus-spring-boot-starter:1.0.9'
-```
-
-
-
-2.使用
-
-直接注解使用，最重要的是`type`为`IdType.INPUT`，则会使用我们自己的bean，如下所示：
+如果你整合的是mybatis-plus版本，直接注解使用，最重要的是`type`为`IdType.INPUT`，则会使用我们的雪花算法，如下所示：
 
 ```java
 public class YourEntity {
     @TableId(value = "id", type = IdType.INPUT)
     private String id;
-}
-```
-
-
-
-3.当然我们也可以跟上面一样装配生成器`YitIdGenerator`并调用`next`方法
-
-``` java
-@RestController
-public class IdController {
-   
-    @Autowired
-    private YitIdGenerator yitIdGenerator;
-    
-    @GetMapping("getId")
-    public long getId(){
-        return yitIdGenerator.next();
-    } 
 }
 ```
 
@@ -230,7 +258,39 @@ public class IdGeneratorConfig {
 
 #### 5.4、关于动态配置的问题
 
-请注意：当你使用动态配置时，如果你在配置文件中注销了某个配置，他是不会恢复默认配置的，这和动态配置底层有关。
+
+
+##### 5.4.1、动态加载配置
+
+当你使用动态加载配置时，如果你在配置中心配置文件中注释掉了某个配置，他是不会恢复默认配置的，这和动态配置底层有关。
+
+因此，在你使用动态配置的时候，我们强烈建议将所有的配置都配置上去，并按需修改。
+
+官方默认配置如下：
+
+``` yaml
+yitter:
+  # 1表示雪花漂移算法，2表示传统雪花算法
+  Method: 1
+  # 基础时间，为2022-01-01 00:00:00
+  baseTime: 1640966400000
+  # 数据中心id
+  DataCenterId: 0
+  # 数据中心id位长，默认为0表示不开启数据中心id功能
+  DataCenterIdBitLength: 0
+  # 机器码位长（能表示机器码的最大值）
+  WorkerId: 0
+  # 机器码（当前系统的机器码）
+  WorkerIdBitLength: 1
+  # 序列数位长（能表示机器码的最大序列数）
+  SeqBitLength: 6
+  # 最大序列数（含）
+  MinSeqNumber: 5
+  # 最小序列数（含）
+  MaxSeqNumber: 0
+  # 最大漂移次数，与计算能力有关
+  TopOverCostCount: 2000
+```
 
 
 
@@ -241,11 +301,13 @@ public class IdGeneratorConfig {
 #### 6.1、id组成
 
 - 本算法生成的ID由3部分组成（沿用雪花算法定义）：
-- +-------------------------+--------------+----------+
-- | 1.相对基础时间的时间差 | 2.WorkerId | 3.序列数 |
-- +-------------------------+--------------+----------+
+- +------------------------------------+----------------------------------------+---------------------------+--------------+
+- | 1.相对基础时间的时间差 | 2.DataCenterId数据中心id |3.WorkerId机器码 | 4.序列数 |
+- +------------------------------------+----------------------------------------+---------------------------+--------------+
 
 
+
+当然下图并没有DataCenterId数据中心id，但其实类似于WorkerId的。
 
 ![2](https://cdn.jsdelivr.net/gh/lmlx6688/img1/SnowFlake/2.png)
 
