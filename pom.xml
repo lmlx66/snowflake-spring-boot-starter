@@ -68,13 +68,6 @@
             <artifactId>swagger-annotations</artifactId>
             <version>${swagger-annotations.version}</version>
         </dependency>
-
-        <!--spring-cloud注解，主要是引入动态刷新-->
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-context</artifactId>
-            <version>${spring-cloud-context.version}</version>
-        </dependency>
     </dependencies>
 
 
