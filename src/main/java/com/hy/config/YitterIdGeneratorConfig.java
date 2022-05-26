@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
  * @description: id生成自动配置类
  * @createTime: 2022年05月19日 11:11:27
  */
+@RefreshScope
 @EnableConfigurationProperties({IdGeneratorOptions.class})
 public class YitterIdGeneratorConfig {
 
