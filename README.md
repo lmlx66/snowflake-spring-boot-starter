@@ -75,7 +75,7 @@ maven
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-mybatisPlus-spring-boot-starter</artifactId>
-  <version>1.0.10</version>
+  <version>1.0.10-RELEASE</version>
 </dependency>
 ```
 
