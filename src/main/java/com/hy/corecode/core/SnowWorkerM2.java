@@ -11,6 +11,7 @@ import com.hy.properties.IdGeneratorOptions;
  */
 public class SnowWorkerM2 extends SnowWorkerM1 {
 
+    //调用父类构造
     public SnowWorkerM2(IdGeneratorOptions options) {
         super(options);
     }
@@ -37,12 +38,9 @@ public class SnowWorkerM2 extends SnowWorkerM1 {
             }
 
             _LastTimeTick = currentTimeTick;
-            long result = ((currentTimeTick << _TimestampShift) + //时间差数，时间戳位移 = 数据中心id位长 + 机器码位长 + 序数位长
-                    ((long) DataCenterId << _DataCenterShift) + //数据中心id，数据中心id位移 = 机器码位长 + 序数位长
-                    ((long) WorkerId << SeqBitLength) + //机器码数，机器码位移 = 序数位长
-                    (int) _CurrentSeqNumber); // 直接拼接使用序数
 
-            return result;
+            //位移并返回
+            return ShiftStitchingResult(currentTimeTick);
         }
 
     }

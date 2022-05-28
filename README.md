@@ -45,13 +45,31 @@
 
 [maven仓库地址](https://repo1.maven.org/maven2/io/github/lmlx66/)
 
-
-
-1. springboot不使用动态配置
+我们通过是否使用动态配置，是否使用mybatis-plus，分出了四个包，请你按需引入。模板如下：
 
 maven：
 
 ``` xml
+<dependency>
+  <groupId>io.github.lmlx66</groupId>
+  <artifactId>工件名</artifactId>
+  <version>1.0.10-RELEASE</version>
+</dependency>
+```
+
+Gradle：
+
+``` groovy
+implementation 'io.github.lmlx66:工件名:1.0.10-RELEASE'
+```
+
+
+
+1.假如你不需要使用动态配置，不需要整合mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-spring-boot-starter`
+
+maven：
+
+```xml
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
@@ -61,73 +79,21 @@ maven：
 
 Gradle：
 
-``` groovy
+```gradle
 implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.10-RELEASE'
 ```
 
 
 
-2. springboot+mybatis-plus主键生成策略不使用动态配置
+**2.不需要动态配置，需要mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-mybatisPlus-spring-boot-starter`**
 
-maven
+**3.需要动态配置，不需要mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-spring-cloud-starter`**
 
-```
-<dependency>
-  <groupId>io.github.lmlx66</groupId>
-  <artifactId>yitter-idgenerator-mybatisPlus-spring-boot-starter</artifactId>
-  <version>1.0.10-RELEASE</version>
-</dependency>
-```
-
-Gradle：
-
-```
-implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.10-RELEASE'
-```
+**4..需要动态配置，需要mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-mybatisPlus-spring-cloud-starter`**
 
 
 
-3. springboot使用动态配置
-
-maven：
-
-``` xml
-<dependency>
-  <groupId>io.github.lmlx66</groupId>
-  <artifactId>yitter-idgenerator-spring-cloud-starter</artifactId>
-  <version>1.0.10-RELEASE</version>
-</dependency>
-```
-
-Gradle：
-
-``` groovy
-implementation 'io.github.lmlx66:yitter-idgenerator-spring-cloud-starter:1.0.10-RELEASE'
-```
-
-
-
-4. springboot+mybatis-plus主键生成策略使用动态配置
-
-maven
-
-```
-<dependency>
-  <groupId>io.github.lmlx66</groupId>
-  <artifactId>yitter-idgenerator-mybatisPlus-spring-cloud-starter</artifactId>
-  <version>1.0.10-RELEASE</version>
-</dependency>
-```
-
-Gradle：
-
-```
-implementation 'io.github.lmlx66:yitter-idgenerator-spring-cloud-starter:1.0.10-RELEASE'
-```
-
-
-
-##### 4.1.2、使用生成器生成id
+##### 4.1.2、如何使用
 
 注入生成器`YitIdGenerator`并调用`next`方法
 
@@ -151,7 +117,7 @@ public class IdController {
 
 ##### 4.1.3、yaml配置
 
-当然我们也可以对雪花算法简单的配置一下
+当然我们也可以对雪花算法简单的配置一下，yaml文件示例如下：
 
 ```yaml
 yitter:
@@ -194,8 +160,6 @@ public class YourEntity {
 | MaxSeqNumber          | 0（不限制）   | 最大序列数（含）                                |
 | MinSeqNumber          | 5（不限制）   | 最小序列数（含）                                |
 | TopOverCostCount      | 2000          | 最大漂移次数，与计算能力有关                    |
-
-注意：DataCenterId和DataCenterIdBitLength两个数据中心配置，是v1.0.10-SNAPSHOT的新增功能，还在内测阶段。
 
 
 
