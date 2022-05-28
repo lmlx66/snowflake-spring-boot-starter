@@ -166,7 +166,9 @@ yitter:
 
 #### 4.2、整合mybatis-plus
 
-如果你整合的是mybatis-plus版本，直接在实体类上使用注解`@TableId(value = "对应表字段名", type = IdType.ASSIGN_ID)`，最重要的是`type`为`IdType.ASSIGN_ID`，则会使用我们的雪花算法，如下所示：
+如果你整合的是mybatis-plus版本，在实体类上使用注解`@TableId(value = "对应表字段名", type = IdType.ASSIGN_ID)`，则插入该字段为null会使用我们的雪花算法生成一个id。
+
+其中重要的是`type`必须为`IdType.ASSIGN_ID`，如下所示：
 
 ```java
 public class YourEntity {
