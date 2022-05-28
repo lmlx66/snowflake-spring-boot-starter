@@ -47,24 +47,7 @@
 
 [maven仓库地址](https://repo1.maven.org/maven2/io/github/lmlx66/)
 
-我们通过是否使用动态配置，是否使用mybatis-plus，分出了四个包，请你按需引入。模板如下：
-
-maven：
-
-``` xml
-<dependency>
-  <groupId>io.github.lmlx66</groupId>
-  <artifactId>工件名</artifactId>
-  <version>1.0.10-RELEASE</version>
-</dependency>
-```
-
-Gradle：
-
-``` groovy
-implementation 'io.github.lmlx66:工件名:1.0.10-RELEASE'
-```
-
+我们通过是否使用动态配置，是否使用mybatis-plus，分出了四个包，请你按需引入。
 
 
 **1.假如你不需要使用动态配置，不需要整合mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-spring-boot-starter`，示例如下：**
