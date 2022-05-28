@@ -131,11 +131,11 @@ yitter:
 
 #### 4.2、整合mybatis-plus
 
-如果你整合的是mybatis-plus版本，直接注解使用，最重要的是`type`为`IdType.INPUT`，则会使用我们的雪花算法，如下所示：
+如果你整合的是mybatis-plus版本，直接注解使用，最重要的是`type`为`IdType.ASSIGN_ID`，则会使用我们的雪花算法，如下所示：
 
 ```java
 public class YourEntity {
-    @TableId(value = "id", type = IdType.INPUT)
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
 }
 ```
