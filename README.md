@@ -244,9 +244,9 @@ yitter:
   DataCenterId: 0
   # 数据中心id位长，默认为0表示不开启数据中心id功能
   DataCenterIdBitLength: 0
-  # 机器码位长（能表示机器码的最大值）
-  WorkerId: 0
   # 机器码（当前系统的机器码）
+  WorkerId: 0
+  # 机器码位长（能表示机器码的最大值）
   WorkerIdBitLength: 1
   # 序列数位长（能表示机器码的最大序列数）
   SeqBitLength: 6
