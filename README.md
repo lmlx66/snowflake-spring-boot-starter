@@ -2,16 +2,16 @@
 
 ### 1、介绍
 
-雪花算法是一个分布式主键id生成的解决方案，他解决了分布式id生成的痛点问题。
+雪花算法是一个分布式主键id生成的解决方案，他解决了分布式id生成的痛点问题，本算法基于推特雪花算法，进行深度优化。
 
-本项目依赖于[SnowFlake IdGenerator](https://gitee.com/yitter/idgenerator)核心代码，加入springboot自动配置，从而达到开箱即用的效果。该算法在缩短ID长度的同时，具备极高瞬时并发处理能力（50W/0.1s）。并且支持回拨。
+算法基于[SnowFlake IdGenerator](https://gitee.com/yitter/idgenerator)核心代码开发，引入springboot自动配置，从而做到开箱即用的效果。该算法在缩短ID长度的同时，具备极高瞬时并发处理能力（50W/0.1s），且支持时间回拨。
 
 **如果你觉得好用，请点一个star，这对我来说非常重要，谢谢！！！**
 
 
 ### 2、技术支持
 
-本包基于[多语言新雪花算法(SnowFlake IdGenerator)](https://gitee.com/yitter/idgenerator)核心代码实现，关于该算法更多细节请参考其项目地址。
+本算法基于[多语言新雪花算法(SnowFlake IdGenerator)](https://gitee.com/yitter/idgenerator)核心代码实现，关于该算法更多细节请参阅项目地址。
 
 
 
@@ -30,6 +30,8 @@
 ✔ 基础功能，开箱即用，无需配置文件、数据库连接等。
 
 ✔支持微服务动态配置，会动态加载单例bean，通过动态加载配置文件，而实现自动注册机器码。
+
+✔支持数据中心id分配，更贴近实际生产环境。
 
 
 
@@ -65,7 +67,7 @@ implementation 'io.github.lmlx66:工件名:1.0.10-RELEASE'
 
 
 
-1.假如你不需要使用动态配置，不需要整合mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-spring-boot-starter`
+1.假如你不需要使用动态配置，不需要整合mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-spring-boot-starter`，示例如下：
 
 maven：
 
