@@ -37,6 +37,8 @@
 
 ### 4、如何使用
 
+当然，我也为你准备了一个demo：[新型雪花算法微服务demo](https://gitee.com/lmlx66/hy-id-generator-demo)
+
 
 
 #### 4.1、通用步骤
