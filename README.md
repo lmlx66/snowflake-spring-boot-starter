@@ -67,7 +67,7 @@ implementation 'io.github.lmlx66:工件名:1.0.10-RELEASE'
 
 
 
-1.假如你不需要使用动态配置，不需要整合mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-spring-boot-starter`，示例如下：
+**1.假如你不需要使用动态配置，不需要整合mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-spring-boot-starter`，示例如下：**
 
 maven：
 
@@ -89,9 +89,61 @@ implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.10-R
 
 **2.不需要动态配置，需要mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-mybatisPlus-spring-boot-starter`**
 
+maven：
+
+```xml
+<dependency>
+  <groupId>io.github.lmlx66</groupId>
+  <artifactId>yitter-idgenerator-mybatisPlus-spring-boot-starter</artifactId>
+  <version>1.0.11</version>
+</dependency>
+```
+
+Gradle：
+
+```gradle
+implementation 'io.github.lmlx66:yitter-idgenerator-mybatisPlus-spring-boot-starter:1.0.11'
+```
+
+
+
 **3.需要动态配置，不需要mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-spring-cloud-starter`**
 
+maven：
+
+```xml
+<dependency>
+  <groupId>io.github.lmlx66</groupId>
+  <artifactId>yitter-idgenerator-spring-cloud-starter</artifactId>
+  <version>1.0.10-RELEASE</version>
+</dependency>
+```
+
+Gradle：
+
+```gradle
+implementation 'io.github.lmlx66:yitter-idgenerator-spring-cloud-starter:1.0.10-RELEASE'
+```
+
+
+
 **4..需要动态配置，需要mybatis-plus主键生成策略，则引入工件名：`yitter-idgenerator-mybatisPlus-spring-cloud-starter`**
+
+maven：
+
+```xml
+<dependency>
+  <groupId>io.github.lmlx66</groupId>
+  <artifactId>yitter-idgenerator-mybatisPlus-spring-cloud-starter</artifactId>
+  <version>1.0.11</version>
+</dependency>
+```
+
+Gradle：
+
+```gradle
+implementation 'io.github.lmlx66:yitter-idgenerator-mybatisPlus-spring-cloud-starter:1.0.11'
+```
 
 
 
@@ -131,7 +183,7 @@ yitter:
 
 #### 4.2、整合mybatis-plus
 
-如果你整合的是mybatis-plus版本，直接注解使用，最重要的是`type`为`IdType.ASSIGN_ID`，则会使用我们的雪花算法，如下所示：
+如果你整合的是mybatis-plus版本，直接在实体类上使用注解`@TableId(value = "对应表字段名", type = IdType.ASSIGN_ID)`，最重要的是`type`为`IdType.ASSIGN_ID`，则会使用我们的雪花算法，如下所示：
 
 ```java
 public class YourEntity {
