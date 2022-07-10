@@ -60,14 +60,14 @@ maven：
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-spring-boot-starter</artifactId>
-  <version>1.0.10-RELEASE</version>
+  <version>1.1.0-RELEASE</version>
 </dependency>
 ```
 
 Gradle：
 
 ```gradle
-implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.0.10-RELEASE'
+implementation 'io.github.lmlx66:yitter-idgenerator-spring-boot-starter:1.1.0-RELEASE'
 ```
 
 
@@ -80,14 +80,14 @@ maven：
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-mybatisPlus-spring-boot-starter</artifactId>
-  <version>1.0.11</version>
+  <version>1.1.0-RELEASE</version>
 </dependency>
 ```
 
 Gradle：
 
 ```gradle
-implementation 'io.github.lmlx66:yitter-idgenerator-mybatisPlus-spring-boot-starter:1.0.11'
+implementation 'io.github.lmlx66:yitter-idgenerator-mybatisPlus-spring-boot-starter:1.1.0-RELEASE'
 ```
 
 
@@ -100,14 +100,14 @@ maven：
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-spring-cloud-starter</artifactId>
-  <version>1.0.10-RELEASE</version>
+  <version>1.1.0-RELEASE</version>
 </dependency>
 ```
 
 Gradle：
 
 ```gradle
-implementation 'io.github.lmlx66:yitter-idgenerator-spring-cloud-starter:1.0.10-RELEASE'
+implementation 'io.github.lmlx66:yitter-idgenerator-spring-cloud-starter:1.1.0-RELEASE'
 ```
 
 
@@ -120,32 +120,32 @@ maven：
 <dependency>
   <groupId>io.github.lmlx66</groupId>
   <artifactId>yitter-idgenerator-mybatisPlus-spring-cloud-starter</artifactId>
-  <version>1.0.11</version>
+  <version>1.1.0-RELEASE</version>
 </dependency>
 ```
 
 Gradle：
 
 ```gradle
-implementation 'io.github.lmlx66:yitter-idgenerator-mybatisPlus-spring-cloud-starter:1.0.11'
+implementation 'io.github.lmlx66:yitter-idgenerator-mybatisPlus-spring-cloud-starter:1.1.0-RELEASE'
 ```
 
 
 
 ##### 4.1.2、如何使用
 
-注入生成器`YitIdGenerator`并调用`next`方法
+注入生成器`WFGIdGenerator`并调用`next`方法，至于为什么是`WGF`呢？我网名叫`王富贵`
 
 ``` java
 @RestController
 public class IdController {
    
     @Autowired
-    private YitIdGenerator yitIdGenerator;
+    private WFGIdGenerator wFGIdGenerator;
     
     @GetMapping("getId")
     public long getId(){
-        return yitIdGenerator.next();
+        return wFGIdGenerator.next();
     } 
 }
 ```
@@ -159,7 +159,7 @@ public class IdController {
 当然我们也可以对雪花算法简单的配置一下，yaml文件示例如下：
 
 ```yaml
-yitter:
+wfg:
   method: 1 # 1为雪花漂移算法，2为传统算法
   worker-id: 2 # 机器码id
 ```
@@ -187,7 +187,7 @@ public class YourEntity {
 
 #### 5.1、配置文件配置
 
-我们支持在yaml或者properties等配置文件中配置，注意前缀为`yitter`
+我们支持在yaml或者properties等配置文件中配置，注意前缀为`wfg`
 
 | 参数名                | 默认值        | 作用                                            |
 | --------------------- | ------------- | ----------------------------------------------- |
@@ -206,7 +206,7 @@ public class YourEntity {
 
 #### 5.2、配置类配置
 
-当然，我们也支持配置类配置，返回类型为YitIdGenerator，其构造需要一个IdGeneratorProperties类型。
+当然，我们也支持配置类配置，返回类型为WFGIdGenerator，其构造需要一个IdGeneratorProperties类型。
 
 IdGeneratorProperties是基础配置类实体映射类，其内部属性即我们可配置的属性。
 
@@ -216,13 +216,13 @@ IdGeneratorProperties是基础配置类实体映射类，其内部属性即我�
 @Configuration
 public class IdGeneratorConfig {
     @Bean
-    public YitIdGenerator yitIdGenerator() {
+    public WFGIdGenerator wFGIdGenerator() {
          //准备基础配置类，在此可以配置基础信息
         IdGeneratorOptions idGeneratorOptions = new IdGeneratorOptions();
         idGeneratorOptions.setWorkerId((short) 6); //设置机器码为6
         idGeneratorOptions.setWorkerIdBitLength((byte) 3); //设置机器码位长为3
         //装载id生成器的配置文件
-        return new YitIdGenerator(idGeneratorOptions);
+        return new wFGIdGenerator(idGeneratorOptions);
     }
 }
 ```
@@ -274,7 +274,7 @@ public class IdGeneratorConfig {
 官方默认配置如下：
 
 ``` yaml
-yitter:
+w:
   # 1表示雪花漂移算法，2表示传统雪花算法
   Method: 1
   # 基础时间，为2022-01-01 00:00:00
