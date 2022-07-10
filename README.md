@@ -324,7 +324,7 @@ yitter:
 
 当然下图并没有DataCenterId数据中心id，但其实类似于WorkerId的。
 
-![2](https://cdn.jsdelivr.net/gh/lmlx6688/img1/SnowFlake/2.png)
+![2](http://picgo.img.lmlx66.top/SnowFlake/2.png)
 
 
 
