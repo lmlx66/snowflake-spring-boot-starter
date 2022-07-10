@@ -307,7 +307,7 @@ yitter:
 
 动态配置是依赖 spring-cloud 核心注解`@RefreshScope`实现的，因此我们引入了 `spring-cloud-context-3.1.2` 版本，但做过微服务的朋友都知道，spring-boot与spring-cloud版本需要高度对应，因此可能 `spring-cloud-context-3.1.2` 可能与你项目的 spring-boot 版本不对应，需移除旧版本，或引入与你 spring-boot 版本对应的 spring-cloud-context 版本
 
-
+其二，我们由于自动配置在spring-2.7.0做出较大改变，因此暂时没有适配。如果您的spring版本为2.7.0，请降低spring版本使用。
 
 ### 6、其他细节
 
