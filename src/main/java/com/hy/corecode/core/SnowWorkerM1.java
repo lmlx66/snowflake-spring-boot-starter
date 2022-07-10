@@ -89,7 +89,9 @@ public class SnowWorkerM1 implements ISnowWorker {
      * 回拨序数位索引
      */
     protected byte _TurnBackIndex = 0;
-
+    /**
+     * 超出当前毫秒序号最大长度标识
+     */
     protected boolean _IsOverCost = false;
     protected int _OverCostCountInOneTerm = 0;
     protected int _GenCountInOneTerm = 0;
@@ -307,8 +309,12 @@ public class SnowWorkerM1 implements ISnowWorker {
      */
     protected long GetNextTimeTick() {
         long tempTimeTicker = GetCurrentTimeTick();
-
         while (tempTimeTicker <= _LastTimeTick) {
+            try {
+                Thread.sleep(1); //发生回拨等待一毫秒，实际上是阻塞一毫秒生成
+            } catch (InterruptedException e) {
+                throw new IdGeneratorException("Error when time callback waits one millisecond");
+            }
             tempTimeTicker = GetCurrentTimeTick();
         }
 

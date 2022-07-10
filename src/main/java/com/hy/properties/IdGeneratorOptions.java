@@ -14,7 +14,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ApiModel("雪花算法配置信息实体")
-@ConfigurationProperties("yitter")
+@ConfigurationProperties("wfg")
 public class IdGeneratorOptions {
 
     /**

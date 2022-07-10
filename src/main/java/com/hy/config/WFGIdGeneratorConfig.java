@@ -1,7 +1,7 @@
 package com.hy.config;
 
+import com.hy.corecode.idgen.WFGIdGenerator;
 import com.hy.properties.IdGeneratorOptions;
-import com.hy.corecode.idgen.YitIdGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Bean;
  * @createTime: 2022年05月19日 11:11:27
  */
 @EnableConfigurationProperties({IdGeneratorOptions.class})
-public class YitterIdGeneratorConfig {
+public class WFGIdGeneratorConfig {
 
     @Autowired
     private IdGeneratorOptions idGeneratorOptions;
@@ -25,8 +25,8 @@ public class YitterIdGeneratorConfig {
      * @return DefaultIdGenerator
      */
     @Bean()
-    @ConditionalOnMissingBean(YitIdGenerator.class)//用户没有注入自己的bean才装配
-    public YitIdGenerator getDefaultIdGenerator() {
-        return new YitIdGenerator(idGeneratorOptions);
+    @ConditionalOnMissingBean(WFGIdGenerator.class)//用户没有注入自己的bean才装配
+    public WFGIdGenerator getDefaultIdGenerator() {
+        return new WFGIdGenerator(idGeneratorOptions);
     }
 }
