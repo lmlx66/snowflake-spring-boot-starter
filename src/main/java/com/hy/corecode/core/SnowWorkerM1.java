@@ -311,7 +311,7 @@ public class SnowWorkerM1 implements ISnowWorker {
         long tempTimeTicker = GetCurrentTimeTick();
         while (tempTimeTicker <= _LastTimeTick) {
             try {
-                Thread.sleep(1); //发生回拨等待一毫秒，实际上是阻塞一毫秒生成
+                Thread.sleep(0,10000); //发生回拨等待10微秒，实际上是阻塞10微秒生成
             } catch (InterruptedException e) {
                 throw new IdGeneratorException("Error when time callback waits one millisecond");
             }
