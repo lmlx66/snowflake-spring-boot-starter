@@ -274,7 +274,7 @@ public class IdGeneratorConfig {
 官方默认配置如下：
 
 ``` yaml
-w:
+wfg:
   # 1表示雪花漂移算法，2表示传统雪花算法
   Method: 1
   # 基础时间，为2022-01-01 00:00:00
