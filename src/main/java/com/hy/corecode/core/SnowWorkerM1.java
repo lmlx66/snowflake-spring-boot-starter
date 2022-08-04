@@ -6,6 +6,8 @@ import com.hy.corecode.contract.IdGeneratorException;
 import com.hy.properties.IdGeneratorOptions;
 import com.hy.corecode.contract.OverCostActionArg;
 
+import java.math.BigInteger;
+
 /**
  * @author: 王富贵
  * @description: 雪花漂移算法核心代码
@@ -286,6 +288,14 @@ public class SnowWorkerM1 implements ISnowWorker {
      * @return 生成的id
      */
     protected long ShiftStitchingResult(long useTimeTick) {
+        /**
+         采用BigInteger重构，但是并发量可能会低，需要测试
+         return BigInteger.valueOf(useTimeTick)
+         .shiftLeft(_TimestampShift).add(BigInteger.valueOf(DataCenterId))
+         .shiftLeft(_DataCenterShift).add(BigInteger.valueOf(WorkerId))
+         .shiftLeft(SeqBitLength).add(BigInteger.valueOf(_CurrentSeqNumber));
+         **/
+
         return ((useTimeTick << _TimestampShift) + //时间差数，时间戳位移 = 数据中心id位长 + 机器码位长 + 序数位长
                 ((long) DataCenterId << _DataCenterShift) + //数据中心id，数据中心id位移 = 机器码位长 + 序数位长
                 ((long) WorkerId << SeqBitLength) + //机器码数，机器码位移 = 序数位长
@@ -311,7 +321,7 @@ public class SnowWorkerM1 implements ISnowWorker {
         long tempTimeTicker = GetCurrentTimeTick();
         while (tempTimeTicker <= _LastTimeTick) {
             try {
-                Thread.sleep(0,10000); //发生回拨等待10微秒，实际上是阻塞10微秒生成
+                Thread.sleep(0, 10000); //发生回拨等待10微秒，实际上是阻塞10微秒生成
             } catch (InterruptedException e) {
                 throw new IdGeneratorException("Error when time callback waits one millisecond");
             }

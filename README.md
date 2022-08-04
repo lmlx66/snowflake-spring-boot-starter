@@ -253,11 +253,19 @@ public class IdGeneratorConfig {
 
 **特别提示**：如果一台服务器部署多个独立服务，需要为每个服务指定不同的 WorkerId。
 
-❄ ***SeqBitLength***，序列数位长，**默认值6**，取值范围 [3, 21]（建议不小于4），决定每毫秒基础生成的ID个数。规则要求：WorkerIdBitLength + SeqBitLength 不超过 22。
+❄ ***SeqBitLength***，序列数位长，**默认值6**，取值范围 [3, 21]（建议不小于4），决定每毫秒基础生成的ID个数。规则要求：WorkerIdBitLength + SeqBitLength + DataCenterIdBitLength <= 22。
 
 ❄ ***MinSeqNumber***，最小序列数，**默认值5**，取值范围 [5, MaxSeqNumber]，每毫秒的前5个序列数对应编号0-4是保留位，其中0是手工插入新值预留位，1-4是时间回拨相应预留位。
 
 ❄ ***MaxSeqNumber***，最大序列数，设置范围 [MinSeqNumber, 2^SeqBitLength-1]，**默认值0**，真实最大序列数取最大值（2^SeqBitLength-1），不为0时，取其为真实最大序列数，一般无需设置，除非多机共享WorkerId分段生成ID（此时还要正确设置最小序列数）。
+
+
+
+tips：
+
+``` java
+关于规则：DataCenterIdBitLength + WorkerIdBitLength + SeqBitLength <= 22，我们id采用long基本类型，之所以定义是因为我们需要预留一些bit给毫秒数占位，因此，如果你需要线上使用，请计算清楚在你的需求下，该实例能跑多久。如果过于庞大，请使用String类型或者BigInteger类型重写。
+```
 
 
 
@@ -275,6 +283,7 @@ public class IdGeneratorConfig {
 
 ``` yaml
 wfg:
+# 请一定注意！ WorkerIdBitLength + SeqBitLength + DataCenterIdBitLength <= 22
   # 1表示雪花漂移算法，2表示传统雪花算法
   Method: 1
   # 基础时间，为2022-01-01 00:00:00
