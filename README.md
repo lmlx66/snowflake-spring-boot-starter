@@ -261,11 +261,11 @@ public class IdGeneratorConfig {
 
 
 
-tips：
+ tips：
 
-``` java
-关于规则：DataCenterIdBitLength + WorkerIdBitLength + SeqBitLength <= 22，我们id采用long基本类型，，占8byte，64bit。之所以定义是因为我们需要预留一些bit给毫秒数占位，因此，如果你需要线上使用，请计算清楚在你的需求下，该实例能跑多久。如果确实需求超出long类型存储大小，请使用String类型或者BigInteger类型重写。
-```
+> 关于规则：DataCenterIdBitLength + WorkerIdBitLength + SeqBitLength <= 22，我们id采用long基本类型，，占8byte，64bit。之所以定义是因为我们需要预留一些bit给毫秒数占位，因此，如果你需要线上使用，请计算清楚在你的需求下，该实例能跑多久。如果确实需求超出long类型存储大小，请使用String类型或者BigInteger类型重写。
+
+
 
 
 
