@@ -264,7 +264,7 @@ public class IdGeneratorConfig {
 tips：
 
 ``` java
-关于规则：DataCenterIdBitLength + WorkerIdBitLength + SeqBitLength <= 22，我们id采用long基本类型，之所以定义是因为我们需要预留一些bit给毫秒数占位，因此，如果你需要线上使用，请计算清楚在你的需求下，该实例能跑多久。如果过于庞大，请使用String类型或者BigInteger类型重写。
+关于规则：DataCenterIdBitLength + WorkerIdBitLength + SeqBitLength <= 22，我们id采用long基本类型，，占8byte，64bit。之所以定义是因为我们需要预留一些bit给毫秒数占位，因此，如果你需要线上使用，请计算清楚在你的需求下，该实例能跑多久。如果确实需求超出long类型存储大小，请使用String类型或者BigInteger类型重写。
 ```
 
 
@@ -383,4 +383,4 @@ wfg:
 
 1. 机器码请务必唯一，我们可以使用redis自增结合nacos-config或其他方法进行自动配置。也可以使用该算法本身等特性进行k8s集成。
 2. 序数位直接决定了本算法一毫秒内能够生成多少id，如果超过此数量，则会阻塞住。请务必测试好你的并发。
-2. 本包支持动态配置加载bean，但我们强烈建议动态配置中心将所有配置都配置上，而不是不配置而使用默认。
+3. 本包支持动态配置加载bean，但我们强烈建议动态配置中心将所有配置都配置上，而不是不配置而使用默认。

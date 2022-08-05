@@ -296,7 +296,7 @@ public class SnowWorkerM1 implements ISnowWorker {
          .shiftLeft(SeqBitLength).add(BigInteger.valueOf(_CurrentSeqNumber));
          **/
 
-        return ((useTimeTick << _TimestampShift) + //时间差数，时间戳位移 = 数据中心id位长 + 机器码位长 + 序数位长
+        return ((useTimeTick << _TimestampShift) + //时间差值，时间戳位移 = 数据中心id位长 + 机器码位长 + 序数位长
                 ((long) DataCenterId << _DataCenterShift) + //数据中心id，数据中心id位移 = 机器码位长 + 序数位长
                 ((long) WorkerId << SeqBitLength) + //机器码数，机器码位移 = 序数位长
                 (int) _CurrentSeqNumber);
@@ -321,9 +321,9 @@ public class SnowWorkerM1 implements ISnowWorker {
         long tempTimeTicker = GetCurrentTimeTick();
         while (tempTimeTicker <= _LastTimeTick) {
             try {
-                Thread.sleep(0, 10000); //发生回拨等待10微秒，实际上是阻塞10微秒生成
+                Thread.sleep(10); //发生回拨等待3毫秒，实际上是阻塞10毫秒生成
             } catch (InterruptedException e) {
-                throw new IdGeneratorException("Error when time callback waits one millisecond");
+                throw new IdGeneratorException("Error when time callback waits three millisecond");
             }
             tempTimeTicker = GetCurrentTimeTick();
         }
